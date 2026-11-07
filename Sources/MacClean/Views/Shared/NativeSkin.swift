@@ -18,9 +18,11 @@ struct CareSidebar: View {
         let ink: Color = scheme == .dark ? .white : world.ink
         VStack(alignment: .leading, spacing: 0) {
             HStack(spacing: 9) {
-                Image(systemName: "sparkles")
-                    .font(.system(size: 17, weight: .semibold))
-                    .foregroundStyle(LinearGradient(colors: [Color(careHex: 0x9AE8FF), Color(careHex: 0x37C8FF)], startPoint: .top, endPoint: .bottom))
+                Image(nsImage: NSApplication.shared.applicationIconImage)
+                    .resizable()
+                    .interpolation(.high)
+                    .frame(width: 24, height: 24)
+                    .accessibilityHidden(true)
                 Text("Sheen").font(.system(size: 17, weight: .semibold)).foregroundStyle(ink)
             }
             .padding(.horizontal, 20).padding(.top, 44).padding(.bottom, 14)
@@ -113,7 +115,7 @@ extension SidebarItem {
     /// The filled symbol each tool shows on its sidebar tile.
     var careSymbol: String {
         switch self {
-        case .smartScan: "sparkles"
+        case .smartScan: SheenMark.symbolName
         case .systemJunk: "bubbles.and.sparkles.fill"
         case .mailAttachments: "paperclip"
         case .trashBins: "trash.fill"

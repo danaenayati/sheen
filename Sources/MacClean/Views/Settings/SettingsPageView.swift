@@ -17,8 +17,7 @@ struct SettingsPageView: View {
     }
 
     @AppStorage(NativeSkin.defaultsKey) private var nativeSkin = true
-    @AppStorage("showMenuBarWidget") private var showMenuBarWidget = false
-    @AppStorage(MenuBarMetric.defaultsKey, store: SharedAppState.defaults) private var menuBarMetricRaw = MenuBarMetric.diskFree.rawValue
+    @AppStorage("showMenuBarWidget") private var showMenuBarWidget = true
     @AppStorage("launchAtLogin") private var launchAtLogin = false
     @AppStorage("removeBackgroundColors") private var removeBackgroundColors = false
     @AppStorage("automaticUpdateChecks") private var automaticUpdateChecks = false
@@ -237,7 +236,7 @@ struct SettingsPageView: View {
             HStack(spacing: 10) {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(L10n.tr("在菜单栏显示 \(MCConstants.appName)", "Show \(MCConstants.appName) in the menu bar", "Показывать \(MCConstants.appName) в строке меню"))
-                    Text(L10n.tr("在屏幕顶部实时显示 CPU、内存、磁盘、电池和网络状态。点击可展开浮窗。", "Live CPU, memory, disk, battery, and network at the top of your screen. Click to expand the popover.", "Показывает в верхней части экрана данные о CPU, памяти, диске, батарее и сети в реальном времени. Нажмите, чтобы раскрыть панель."))
+                    Text(L10n.tr("在菜单栏显示 Sheen 标志。点击可查看 CPU、内存、磁盘、电池、网络和清理建议。", "Sheen's mark in the menu bar. Click it for CPU, memory, disk, battery, network and cleanup tips.", "Значок Sheen в строке меню. Нажмите, чтобы увидеть CPU, память, диск, батарею, сеть и советы."))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -255,23 +254,6 @@ struct SettingsPageView: View {
                 Task { await launcher.setEnabled(newValue) }
             }
             if showMenuBarWidget { widgetStatusRow }
-            Picker(selection: $menuBarMetricRaw) {
-                ForEach(MenuBarMetric.allCases) { metric in
-                    Text(metric.localizedName).tag(metric.rawValue)
-                }
-            } label: {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(L10n.tr("菜单栏显示", "Menu bar display"))
-                    Text(L10n.tr(
-                        "选择应用图标旁显示的紧凑数值。GPU 或电池温度不可用时显示 --。",
-                        "Choose the compact value shown next to the app icon. Unavailable GPU or battery sensors appear as --."
-                    ))
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                }
-            }
-            .pickerStyle(.menu)
-            .disabled(!showMenuBarWidget)
             if let err = launcher.lastError {
                 Label(err.localizedDescription, systemImage: "exclamationmark.triangle.fill")
                     .foregroundStyle(.orange)

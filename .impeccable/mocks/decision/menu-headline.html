@@ -1,0 +1,38 @@
+<!doctype html><html><head><meta charset="utf-8"><style>*{box-sizing:border-box;margin:0;padding:0}
+:root{--deep:#0B0A2E;--mid:#2B2384;--glow:#37C8FF;--tt:#7E6BFF;--tb:#22B5F5;--spark:#5BE3FF;
+--c1:#45E8B0;--c2:#0A9A7B;--p1:#FFC54D;--p2:#F0561A;--r1:#FF7B9C;--r2:#C71A5A;--f1:#CB8EFF;--f2:#7434E6;--a1:#62BCFF;--a2:#2F57F5}
+html,body{width:360px;height:560px;font-family:-apple-system,"SF Pro Text",system-ui,sans-serif;color:#fff;overflow:hidden}
+body{background:radial-gradient(260px 220px at 26% 30%,rgba(55,200,255,.40),transparent 70%),radial-gradient(240px 200px at 100% 0%,rgba(43,35,132,.75),transparent 70%),linear-gradient(150deg,#0B0A2E,#1d1866 55%,#0B0A2E);padding:16px;display:flex;flex-direction:column;gap:14px}
+.brand{display:flex;align-items:center;gap:8px;font:600 15px/1 -apple-system}
+.brand i{width:18px;height:18px;border-radius:5px;background:linear-gradient(160deg,#9AE8FF,#37C8FF)}
+.soft{color:rgba(255,255,255,.72)}
+.tile{width:26px;height:26px;border-radius:7px;flex:none;box-shadow:0 3px 6px rgba(11,10,46,.35);background:linear-gradient(135deg,var(--a),var(--b));position:relative}
+.tile:after{content:"";position:absolute;inset:0;border-radius:7px;background:linear-gradient(#ffffff60,#fff0 55%)}
+.row{display:flex;align-items:center;gap:10px}
+.bar{height:5px;border-radius:3px;background:rgba(255,255,255,.12);overflow:hidden}
+.bar b{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,var(--a),var(--b))}
+.panel{border-radius:12px;background:rgba(11,10,46,.55);padding:12px}
+.pill{height:36px;border-radius:18px;background:linear-gradient(#fff,#ffffffe0);color:#211b6b;font:600 14px/36px -apple-system;text-align:center}
+.foot{margin-top:auto;display:flex;align-items:center;gap:12px}
+.foot .pill{flex:1}
+
+.hero{display:flex;align-items:flex-end;justify-content:space-between}
+.big{font:300 46px/1 -apple-system,"SF Pro Display";letter-spacing:-1px}
+.big small{font:300 22px -apple-system}
+.orb{width:74px;height:74px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#fff,#7E6BFF 45%,#22B5F5 75%,#0B0A2E);box-shadow:0 14px 18px -6px rgba(11,10,46,.9),inset 0 0 0 2px #ffffff55}
+.metrics{display:flex;flex-direction:column;gap:12px}
+.m{display:grid;grid-template-columns:26px 1fr auto;gap:4px 10px;align-items:center}
+.m .bar{grid-column:2/4}
+.m span{font:500 13px -apple-system}.m em{font:300 15px -apple-system;font-style:normal}
+</style></head><body>
+<div class="brand"><i></i>Sheen<span class="soft" style="margin-left:auto;font:400 12px -apple-system">Up 3 days</span></div>
+<div class="hero"><div><div class="big">142<small> GB</small></div><div class="soft" style="font:400 14px -apple-system;margin-top:6px">free on Macintosh HD · Your Mac looks healthy</div></div><div class="orb"></div></div>
+<div class="metrics">
+<div class="m" style="--a:var(--p1);--b:var(--p2)"><div class="tile" style="--a:var(--p1);--b:var(--p2)"></div><span>CPU</span><em>12%</em><div class="bar"><b style="width:12%"></b></div></div>
+<div class="m" style="--a:var(--f1);--b:var(--f2)"><div class="tile" style="--a:var(--f1);--b:var(--f2)"></div><span>Memory</span><em>61%</em><div class="bar"><b style="width:61%"></b></div></div>
+<div class="m" style="--a:var(--c1);--b:var(--c2)"><div class="tile" style="--a:var(--c1);--b:var(--c2)"></div><span>Battery</span><em>84%</em><div class="bar"><b style="width:84%"></b></div></div>
+</div>
+<div class="row soft" style="font:400 12px -apple-system;gap:18px"><span>↓ 1.2 MB/s</span><span>↑ 220 KB/s</span><span>Protection on</span></div>
+<div class="panel row" style="--a:var(--c1);--b:var(--c2)"><div class="tile"></div><div style="flex:1"><div style="font:600 13px -apple-system">4.2 GB of caches</div><div class="soft" style="font:400 12px -apple-system">Safe to clear in System Junk</div></div><div style="font:600 12px -apple-system;color:#9AE8FF">Review</div></div>
+<div class="foot"><div class="pill">Open Sheen</div><span class="soft" style="font:400 13px -apple-system">Quit</span></div>
+</body></html>

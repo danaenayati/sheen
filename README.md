@@ -148,7 +148,19 @@ Removals go to the Trash first, a protected-paths guard checks every file, and C
 </tr>
 </table>
 
-Plus **Smart Scan**, which runs cleanup, malware and privacy checks in one pass, and a **menu bar monitor**.
+Plus **Smart Scan**, which runs cleanup, malware and privacy checks in one pass, and a **menu bar panel**.
+
+## In your menu bar
+
+Sheen's mark sits in the menu bar, nothing else. Click it for a quick health check: CPU, memory, disk and battery as four tiles, network speed and malware status underneath, cleanup tips and connected drives one tab away. Click a tile to open the tool that acts on it. Don't want it? Turn it off in **Settings → Show Sheen in the menu bar**.
+
+<p align="center">
+  <img src="assets/screenshots/menu-panel-dark.png" width="340" alt="Sheen's menu bar panel in dark appearance: Health tab with CPU, Memory, Disk and Battery tiles on a midnight-indigo ground" />
+  &nbsp;&nbsp;
+  <img src="assets/screenshots/menu-panel-light.png" width="340" alt="The same panel in light appearance" />
+</p>
+
+<sub>Shown with sample figures.</sub>
 
 ## A look inside
 
@@ -171,7 +183,7 @@ Plus **Smart Scan**, which runs cleanup, malware and privacy checks in one pass,
 
 ## Install
 
-1. On a Mac with Apple Silicon, download **Sheen-1.0.0.dmg** from [Releases](https://github.com/danaenayati/sheen/releases/latest), open it, and drag **Sheen** to **Applications**.
+1. On a Mac with Apple Silicon, download the latest **Sheen DMG** from [Releases](https://github.com/danaenayati/sheen/releases/latest), open it, and drag **Sheen** to **Applications**.
 2. **First launch.** Sheen is not notarized by Apple yet, so macOS stops the first launch. Open **System Settings → Privacy & Security**, scroll down and click **Open Anyway** next to Sheen. Or, in Terminal:
 
    ```bash

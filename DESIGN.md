@@ -170,7 +170,7 @@ components:
 
 Each tool is a room drenched in its section's color. One original glass object per tool sits in the room under a light the cursor carries: the specular bloom and rim light slide toward the pointer, the object tilts toward it, its pieces parallax by depth, and its floor shadow swings the other way. Beside the object, a large light-weight title, one plain subtitle, three bulleted promises and a single pill action. Scanning happens in the same room: the object glides into the center of a progress ring cut from the section's gradient, and comes back to rest at the head of the results.
 
-The system is native macOS through and through: SF Pro only, SF Symbols as the only glyph source, the real sidebar vibrancy material, system materials under lists. What makes it its own is color and light, not chrome. Dark appearance is a deep two-hue field with a soft light pool behind the object; light appearance is the same hue made luminous, pale top to pale bottom with the same pool. Nothing ships as a raster: every object, tile and ground is drawn in code from a small set of glass primitives.
+The system is native macOS through and through: SF Pro only, SF Symbols plus Sheen's own mark as the only glyph sources, the real sidebar vibrancy material, system materials under lists. What makes it its own is color and light, not chrome. Dark appearance is a deep two-hue field with a soft light pool behind the object; light appearance is the same hue made luminous, pale top to pale bottom with the same pool. Nothing ships as a raster: every object, tile and ground is drawn in code from a small set of glass primitives.
 
 Density is low on the front door and normal on the working screens. A tool's intro is a single viewport with lots of air; once the tool has been used it reopens compact, button first, so returning users reach the task faster.
 
@@ -198,7 +198,7 @@ A world system rather than a palette: every section owns a nine-color room (deep
 ### Neutral
 - **Graphite world** (`settings-*`): Settings. The one desaturated room: slate grounds, steel-blue glow; it keeps every role so Settings behaves like any other room.
 - **Glass White** (`glass-white`): the dark-room pill body, tile glyphs, rim light and specular bloom. Used at fixed opacities (rim 0.95 to 0.08, face sheen 0.34, specular 0.75), never as a flat panel fill.
-- **Brand Spark Ice** (`brand-spark-top`): top stop of the sidebar wordmark sparkle, which ends in Smart Scan glow.
+- **Brand Spark Ice** (`brand-spark-top`): retired from the wordmark (the sidebar now shows the app icon); kept as the Smart Scan spark's lighter neighbour.
 
 ### How each role is applied
 - **Deep / mid** build the dark ground: a top-leading to bottom-trailing gradient deep, mid mixed 35% into deep, deep; a mid corner light at the top right (0.55 opacity, 420pt radius). Deep also tints the dark panel and sidebar (0.55 / 0.5), edges every glass piece, and colors the dark floor shadow (0.85).
@@ -284,7 +284,17 @@ Confident and singular: one pill per screen, inverted by appearance.
 - **List and results panels:** the system ultra-thin material with the room laid over it (deep 0.55 dark, pale top 0.55 light); list backdrops are hidden so the panel shows through. No borders, no radius of their own.
 
 ### Navigation
-- **Sidebar:** the real macOS sidebar vibrancy material tinted by the current world (deep 0.5 dark, pale top 0.42 light), crossfading 0.35s on selection. Wordmark: sparkle symbol in ice-to-glow gradient plus "Sheen" at 17pt semibold. Rows: 24pt section tile, 13pt label (regular at 0.8 ink, semibold at full ink when selected), selection fill ink 0.13, hover 0.06, 9pt continuous corners. The selected row scrolls into view (0.3s ease-out).
+- **Sidebar:** the real macOS sidebar vibrancy material tinted by the current world (deep 0.5 dark, pale top 0.42 light), crossfading 0.35s on selection. Wordmark: the app icon at 24pt plus "Sheen" at 17pt semibold. Rows: 24pt section tile, 13pt label (regular at 0.8 ink, semibold at full ink when selected), selection fill ink 0.13, hover 0.06, 9pt continuous corners. The selected row scrolls into view (0.3s ease-out).
+
+### Sheen mark
+- The app icon reduced to a one-colour template: a back pane as a 1.5pt outline (-14°), a solid front pane (+8°) cut free of it by a 3pt clear gap, and a short round-capped glint in the front pane's upper-left that touches neither edge. 18pt in the menu bar (macOS tints it), and the white glyph of the Smart Scan sidebar tile. Never coloured, never with a value beside it.
+
+### Menu bar panel
+- The Midnight Indigo room at 340pt wide, natural height (never squeezed), cyan glow pool behind the header and the aurora band low behind the footer.
+- Header: app icon 20pt, "Sheen" 15pt semibold, uptime in soft ink at the right. A full-width native segmented control: Health, Tips · n, Devices. All three tabs are laid out together and only one shows, so the panel never resizes.
+- Health: a 2 × 2 grid of figure tiles in series colours (CPU Ember, Memory Cobalt, Disk Ultraviolet, Battery Emerald): 22pt tile, 13pt label, a rose state note at the right of the label row when past its threshold (short form when space runs out), 28pt light monospaced figure, 5pt bar in the series gradient (rose when alerted), one 11pt sub line. CPU and Memory open Optimization, Disk opens Space Map; hover lifts the tile. Below: ↓ / ↑ network and the protection state ("No threats found", or a rose link to Malware Removal).
+- Tips: list-panel cards with the tile in the colour of the tool the action opens, and a compact 24pt pill naming the tool it opens. Devices: drives and displays as tile rows. Empty states use a 36pt tile and one plain sentence.
+- Footer: the room's pill "Open Sheen" filling the row, and a quiet "Quit" that quits only the monitor.
 
 ### Hero object (signature)
 - One original glass object per tool (22), composed on a 300 x 300pt stage inside a 320 x 330pt frame, scaled 0.5 to 1.25 by context. Built only from the glass primitives and the shape kit, lit by the shared light, layered at depths for parallax (front +1 with the pointer, back -1 against; 11pt x, 8pt y at full reach). Always decorative and hidden from VoiceOver.

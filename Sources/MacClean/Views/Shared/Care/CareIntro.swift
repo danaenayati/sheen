@@ -190,14 +190,23 @@ struct CareTile: View {
                     .strokeBorder(.white.opacity(0.32), lineWidth: 0.75)
             }
             .overlay {
-                Image(systemName: symbol)
-                    .font(.system(size: size * 0.44, weight: .semibold))
+                glyph
                     .foregroundStyle(.white)
                     .shadow(color: world.deep.opacity(0.35), radius: 1, y: 1)
             }
             .frame(width: size, height: size)
             .shadow(color: world.deep.opacity(0.28), radius: 6, y: 3)
             .accessibilityHidden(true)
+    }
+
+    @ViewBuilder private var glyph: some View {
+        if symbol == SheenMark.symbolName {
+            Image(nsImage: SheenMark.image(size: size * 0.62))
+                .renderingMode(.template)
+        } else {
+            Image(systemName: symbol)
+                .font(.system(size: size * 0.44, weight: .semibold))
+        }
     }
 }
 

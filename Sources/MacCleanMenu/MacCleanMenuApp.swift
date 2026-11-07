@@ -43,21 +43,13 @@ struct MacCleanMenuApp: App {
     @NSApplicationDelegateAdaptor(MenuAppDelegate.self) private var appDelegate
     @State private var model = MenuStatsModel.shared
     @AppStorage(AppLanguage.defaultsKey, store: SharedAppState.defaults) private var appLanguageRaw = AppLanguage.system.rawValue
-    @AppStorage(MenuBarMetric.defaultsKey, store: SharedAppState.defaults) private var menuBarMetricRaw = MenuBarMetric.diskFree.rawValue
 
     private var appLanguage: AppLanguage {
         AppLanguage(rawValue: appLanguageRaw) ?? .fallback
     }
 
-    /// Menu-bar label icon: an SF Symbol rendered as a template image so
-    /// macOS automatically tints it to match the current menu bar appearance
-    /// (dark in light mode, light in dark mode).
-    private static let labelIcon: NSImage = {
-        let img = NSImage(systemSymbolName: "sparkles",
-                          accessibilityDescription: "Sheen")!
-        img.isTemplate = true
-        return img
-    }()
+    /// Only Sheen's mark sits in the menu bar; every figure lives in the panel.
+    private static let labelIcon = SheenMark.image(size: 18)
 
     var body: some Scene {
         MenuBarExtra {
@@ -72,49 +64,53 @@ struct MacCleanMenuApp: App {
             .environment(\.locale, Locale(identifier: appLanguage.localeIdentifier))
             .id(appLanguage.rawValue)
         } label: {
-            HStack(spacing: 4) {
-                Image(nsImage: Self.labelIcon)
-                    .renderingMode(.template)
-                    .foregroundStyle(.primary)
-                if let stats = model.stats,
-                   let value = MenuBarMetric.resolve(menuBarMetricRaw).formattedValue(
-                       diskFree: stats.diskFree,
-                       gpuUsage: stats.gpuUsage,
-                       memoryUsage: stats.memoryTotal > 0
-                           ? Double(stats.memoryUsed) / Double(stats.memoryTotal)
-                           : 0,
-                       batteryTemperature: stats.batteryTemperature
-                   ) {
-                    Text(value)
-                        .font(.system(size: 11, weight: .medium, design: .monospaced))
-                }
-            }
+            Image(nsImage: Self.labelIcon)
+                .renderingMode(.template)
+                .accessibilityLabel(MCConstants.appName)
         }
         .menuBarExtraStyle(.window)
     }
 }
 
-// MARK: - Palette
+// MARK: - World
 
-enum MenuPalette {
-    static let bgTop = Color(red: 0.33, green: 0.18, blue: 0.55)
-    static let bgBottom = Color(red: 0.13, green: 0.08, blue: 0.28)
-    static let card = Color(red: 0.10, green: 0.07, blue: 0.22)
-    static let teal = Color(red: 0.40, green: 0.85, blue: 0.82)
-    static let yellow = Color(red: 0.98, green: 0.82, blue: 0.30)
-    static let green = Color(red: 0.24, green: 0.80, blue: 0.47)
-    static let red = Color(red: 0.93, green: 0.33, blue: 0.34)
-    static let textPrimary = Color.white
-    static let textSecondary = Color.white.opacity(0.58)
+/// Sheen's Midnight Indigo room, plus the section colours the panel lends
+/// to its metric tiles. Values come from DESIGN.md.
+enum MenuWorld {
+    static let deep = Color(menuHex: 0x0B0A2E)
+    static let midIntoDeep = Color(menuHex: 0x201A66)
+    static let mid = Color(menuHex: 0x2B2384)
+    static let glow = Color(menuHex: 0x37C8FF)
+    static let spark = Color(menuHex: 0x5BE3FF)
+    static let paleTop = Color(menuHex: 0xE9EBFF)
+    static let paleBottom = Color(menuHex: 0xCFEFFF)
+    static let ink = Color(menuHex: 0x1A1660)
+    static let pillLabel = Color(menuHex: 0x211B6B)
 
-    static func barColor(_ v: Double) -> Color {
-        if v > 0.85 { return Color(red: 0.98, green: 0.42, blue: 0.45) }   // soft red
-        if v > 0.65 { return yellow }
-        return teal
+    /// A metric's colours: the gradient of the section whose tool it opens.
+    struct Series {
+        let top: Color
+        let bottom: Color
+        let symbol: String
+    }
+
+    static let cpu = Series(top: Color(menuHex: 0xFFC54D), bottom: Color(menuHex: 0xF0561A), symbol: "cpu")
+    static let memory = Series(top: Color(menuHex: 0x62BCFF), bottom: Color(menuHex: 0x2F57F5), symbol: "memorychip")
+    static let disk = Series(top: Color(menuHex: 0xCB8EFF), bottom: Color(menuHex: 0x7434E6), symbol: "internaldrive")
+    static let battery = Series(top: Color(menuHex: 0x45E8B0), bottom: Color(menuHex: 0x0A9A7B), symbol: "battery.75")
+    static let cleanup = Series(top: Color(menuHex: 0x45E8B0), bottom: Color(menuHex: 0x0A9A7B), symbol: "trash")
+    static let home = Series(top: Color(menuHex: 0x7E6BFF), bottom: Color(menuHex: 0x22B5F5), symbol: "lightbulb")
+    /// Attention: the Protection world's rose, for values past their threshold.
+    static let alert = Series(top: Color(menuHex: 0xFF7B9C), bottom: Color(menuHex: 0xC71A5A), symbol: "exclamationmark")
+}
+
+extension Color {
+    init(menuHex hex: UInt32) {
+        self.init(red: Double((hex >> 16) & 255) / 255, green: Double((hex >> 8) & 255) / 255, blue: Double(hex & 255) / 255)
     }
 }
 
-// MARK: - Popover
+// MARK: - Panel
 
 struct MenuContentView: View {
     let stats: SystemStatsCollector.SystemStats?
@@ -124,280 +120,329 @@ struct MenuContentView: View {
     let tips: [TipsEngine.Tip]
     let onDismissTip: (String) -> Void
 
-    var body: some View {
-        ZStack {
-            LinearGradient(colors: [MenuPalette.bgTop, MenuPalette.bgBottom],
-                           startPoint: .topLeading, endPoint: .bottomTrailing)
-                .ignoresSafeArea()
+    enum Tab: Hashable, CaseIterable { case health, tips, devices }
 
-            VStack(spacing: 12) {
-                header
-                if let stats {
-                    statGrid(stats)
-                    networkCard(stats)
-                    if !tips.isEmpty { recommendationsCard }
-                    if let p = protection { protectionCard(p) }
-                    if let d = devices, d.hasAny { devicesCard(d) }
-                } else {
-                    ProgressView().controlSize(.small).tint(.white)
-                        .frame(height: 100)
-                }
-                footer
+    @State private var tab: Tab
+
+    init(stats: SystemStatsCollector.SystemStats?, networkSpeed: NetworkSpeedMonitor.NetworkSpeed?,
+         devices: ConnectedDevices?, protection: SharedAppState.ProtectionStatus?,
+         tips: [TipsEngine.Tip], onDismissTip: @escaping (String) -> Void, startTab: Tab = .health) {
+        self.stats = stats
+        self.networkSpeed = networkSpeed
+        self.devices = devices
+        self.protection = protection
+        self.tips = tips
+        self.onDismissTip = onDismissTip
+        _tab = State(initialValue: startTab)
+    }
+    @Environment(\.colorScheme) private var scheme
+
+    private var ink: Color { scheme == .dark ? .white : MenuWorld.ink }
+    private var softInk: Color { ink.opacity(scheme == .dark ? 0.72 : 0.74) }
+    private var alertInk: Color { scheme == .dark ? MenuWorld.alert.top : MenuWorld.alert.bottom }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            header
+            FullWidthSegments(titles: [L10n.tr("状态", "Health", "Состояние"),
+                                       tips.isEmpty ? L10n.tr("建议", "Tips", "Советы") : "\(L10n.tr("建议", "Tips", "Советы")) · \(tips.count)",
+                                       L10n.tr("设备", "Devices", "Устройства")],
+                              selection: Binding(get: { Tab.allCases.firstIndex(of: tab) ?? 0 },
+                                                 set: { tab = Tab.allCases[$0] }))
+                .frame(height: 24)
+            // Every tab is laid out at once and only the chosen one shows, so the
+            // panel keeps one height and the footer never jumps.
+            ZStack(alignment: .top) {
+                page(.health) { healthTab }
+                page(.tips) { tipsTab }
+                page(.devices) { devicesTab }
             }
-            .padding(14)
+            .frame(maxWidth: .infinity, minHeight: 232, alignment: .top)
+            .animation(.easeOut(duration: 0.2), value: tab)
+            footer
         }
+        .padding(16)
         .frame(width: 340)
+        // The menu bar window takes the panel's natural height; nothing may
+        // squeeze the tabs under the footer.
+        .fixedSize(horizontal: false, vertical: true)
+        .foregroundStyle(ink)
+        .background(ground)
+    }
+
+    private func page<Content: View>(_ page: Tab, @ViewBuilder content: () -> Content) -> some View {
+        content()
+            .frame(maxWidth: .infinity, alignment: .top)
+            .opacity(tab == page ? 1 : 0)
+            .allowsHitTesting(tab == page)
+            .accessibilityHidden(tab != page)
+    }
+
+    // MARK: Ground
+
+    @ViewBuilder private var ground: some View {
+        if scheme == .dark {
+            ZStack {
+                LinearGradient(colors: [MenuWorld.deep, MenuWorld.midIntoDeep, MenuWorld.deep], startPoint: .topLeading, endPoint: .bottomTrailing)
+                RadialGradient(colors: [MenuWorld.glow.opacity(0.42), MenuWorld.mid.opacity(0.16), .clear], center: UnitPoint(x: 0.2, y: 0.14), startRadius: 4, endRadius: 230)
+                RadialGradient(colors: [MenuWorld.mid.opacity(0.55), .clear], center: UnitPoint(x: 0.95, y: 0.02), startRadius: 0, endRadius: 240)
+                aurora(strength: 0.5)
+            }
+        } else {
+            ZStack {
+                LinearGradient(colors: [MenuWorld.paleTop, MenuWorld.paleBottom], startPoint: .topLeading, endPoint: .bottomTrailing)
+                RadialGradient(colors: [MenuWorld.glow.opacity(0.38), .clear], center: UnitPoint(x: 0.2, y: 0.14), startRadius: 4, endRadius: 230)
+                aurora(strength: 0.32)
+            }
+        }
+    }
+
+    /// The Midnight world's signature light: a long cyan band low across the room.
+    private func aurora(strength: Double) -> some View {
+        GeometryReader { geometry in
+            Ellipse()
+                .fill(RadialGradient(colors: [MenuWorld.spark.opacity(strength), MenuWorld.glow.opacity(strength * 0.4), .clear],
+                                     center: .center, startRadius: 0, endRadius: geometry.size.width * 0.5))
+                .frame(width: geometry.size.width * 1.2, height: 110)
+                .rotationEffect(.degrees(-12))
+                .position(x: geometry.size.width * 0.45, y: geometry.size.height - 50)
+                .blur(radius: 26)
+        }
     }
 
     // MARK: Header
 
     private var header: some View {
-        HStack(spacing: 10) {
-            Image(nsImage: VacuumAsset.image)
-                .resizable().interpolation(.high)
-                .frame(width: 30, height: 30)
-                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-            VStack(alignment: .leading, spacing: 1) {
-                Text(MCConstants.appName)
-                    .font(.system(size: 15, weight: .bold))
-                    .foregroundStyle(MenuPalette.textPrimary)
-                Text(L10n.tr("实时系统状态", "Live system stats", "Состояние системы"))
-                    .font(.system(size: 10))
-                    .foregroundStyle(MenuPalette.textSecondary)
-            }
+        HStack(spacing: 8) {
+            Image(nsImage: NSApplication.shared.applicationIconImage)
+                .resizable()
+                .interpolation(.high)
+                .frame(width: 20, height: 20)
+                .accessibilityHidden(true)
+            Text(MCConstants.appName)
+                .font(.system(size: 15, weight: .semibold))
             Spacer()
-        }
-    }
-
-    // MARK: Stat grid (rings)
-
-    private func statGrid(_ s: SystemStatsCollector.SystemStats) -> some View {
-        let diskUsed = s.diskTotal > 0 ? Double(s.diskTotal - s.diskFree) / Double(s.diskTotal) : 0
-        return LazyVGrid(columns: [GridItem(.flexible(), spacing: 10), GridItem(.flexible(), spacing: 10)], spacing: 10) {
-            ringCard(icon: "cpu", label: "CPU",
-                     value: s.cpuUsage, center: "\(Int((s.cpuUsage*100).rounded()))%",
-                     sub: nil)
-            ringCard(icon: "memorychip", label: L10n.tr("内存", "Memory", "Память"),
-                     value: s.memoryPressure, center: "\(Int((s.memoryPressure*100).rounded()))%",
-                     sub: FileSizeFormatter.format(s.memoryUsed),
-                     detail: s.swapUsed > 0 ? HealthAlertStrings.swapLine(s.swapUsed) : nil)
-            ringCard(icon: "internaldrive", label: L10n.tr("磁盘", "Disk", "Диск"),
-                     value: diskUsed, center: "\(Int((diskUsed*100).rounded()))%",
-                     sub: L10n.tr("\(FileSizeFormatter.format(s.diskFree)) 可用", "\(FileSizeFormatter.format(s.diskFree)) free", "Свободно: \(FileSizeFormatter.format(s.diskFree))"))
-            if let level = s.batteryLevel {
-                ringCard(icon: s.batteryIsCharging ? "battery.100.bolt" : "battery.75",
-                         label: s.batteryIsCharging ? L10n.tr("充电中", "Charging", "Заряжается") : L10n.tr("电池", "Battery", "Аккумулятор"),
-                         value: level, center: "\(Int((level*100).rounded()))%",
-                         sub: nil, forceColor: level > 0.2 ? MenuPalette.teal : Color(red:0.98,green:0.42,blue:0.45))
-            } else {
-                uptimeCard(s)
+            if let stats {
+                Text(L10n.tr("已运行 \(formatUptime(stats.uptime))", "Up \(formatUptime(stats.uptime))", "Работает \(formatUptime(stats.uptime))"))
+                    .font(.system(size: 12))
+                    .monospacedDigit()
+                    .foregroundStyle(softInk)
             }
         }
     }
 
-    private func ringCard(icon: String, label: String, value: Double, center: String, sub: String?, detail: String? = nil, forceColor: Color? = nil) -> some View {
-        let color = forceColor ?? MenuPalette.barColor(value)
-        return VStack(spacing: 12) {
-            statHeader(icon: icon, label: label, tint: color)
-            RingGauge(value: value, color: color, center: center)
-                .frame(width: 58, height: 58)
-            // Always render the subtitle line (a space when empty) so
-            // every card is the same height and the rings line up.
-            VStack(spacing: 3) {
-                Text(sub ?? " ")
-                    .font(.system(size: 10, design: .monospaced))
-                    .foregroundStyle(MenuPalette.textSecondary)
-                    .lineLimit(1)
-                if let detail {
-                    Text(detail)
-                        .font(.system(size: 10, design: .monospaced))
-                        .foregroundStyle(MenuPalette.textSecondary)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.8)
-                }
-            }
-        }
-        // Fill the grid row so a card with a detail line and its neighbour
-        // stay the same height, rings aligned at the top.
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-        .padding(16)
-        .glassCard()
-    }
+    // MARK: Health
 
-    private func uptimeCard(_ s: SystemStatsCollector.SystemStats) -> some View {
-        VStack(spacing: 12) {
-            statHeader(icon: "clock", label: L10n.tr("运行时间", "Uptime", "Время работы"), tint: MenuPalette.teal)
-            Text(formatUptime(s.uptime))
-                .font(.system(size: 22, weight: .semibold, design: .rounded))
-                .foregroundStyle(.white)
-                .frame(height: 58)
-            Text(" ").font(.system(size: 10, design: .monospaced))
-        }
-        .frame(maxWidth: .infinity, alignment: .top)
-        .padding(16)
-        .glassCard()
-    }
-
-    /// Card header: icon + label, centered horizontally above the ring
-    /// (no Spacer, so the VStack centers the group).
-    private func statHeader(icon: String, label: String, tint: Color) -> some View {
-        HStack(spacing: 6) {
-            Image(systemName: icon).font(.system(size: 11, weight: .semibold)).foregroundStyle(tint)
-            Text(label).font(.system(size: 12, weight: .semibold)).foregroundStyle(MenuPalette.textPrimary)
-        }
-    }
-
-    // MARK: Network strip
-
-    private func networkCard(_ s: SystemStatsCollector.SystemStats) -> some View {
-        HStack(spacing: 0) {
-            if let net = networkSpeed {
-                netCell(icon: "arrow.down", color: MenuPalette.teal, value: net.formattedIn)
-                divider
-                netCell(icon: "arrow.up", color: MenuPalette.yellow, value: net.formattedOut)
-                divider
-            }
-            netCell(icon: "clock", color: MenuPalette.textSecondary, value: formatUptime(s.uptime))
-        }
-        .padding(.vertical, 9)
-        .glassCard()
-    }
-
-    private func netCell(icon: String, color: Color, value: String) -> some View {
-        HStack(spacing: 4) {
-            Image(systemName: icon).font(.system(size: 9, weight: .bold)).foregroundStyle(color)
-            Text(value).font(.system(size: 10, weight: .medium, design: .monospaced)).foregroundStyle(.white.opacity(0.85))
-        }
-        .frame(maxWidth: .infinity)
-    }
-
-    private var divider: some View {
-        Rectangle().fill(Color.white.opacity(0.10)).frame(width: 1, height: 18)
-    }
-
-    // MARK: Recommendations
-
-    private var recommendationsCard: some View {
-        VStack(alignment: .leading, spacing: 9) {
-            sectionHeader(icon: "sparkles", title: L10n.tr("建议", "Recommendations", "Рекомендации"), tint: MenuPalette.yellow)
-            ForEach(tips.prefix(3)) { tip in
-                VStack(alignment: .leading, spacing: 7) {
-                    HStack(alignment: .top, spacing: 8) {
-                        Image(systemName: tip.symbol).font(.system(size: 12)).foregroundStyle(MenuPalette.teal).frame(width: 16)
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(tip.title).font(.system(size: 11, weight: .semibold)).foregroundStyle(.white).lineLimit(2)
-                            Text(tip.body).font(.system(size: 10)).foregroundStyle(MenuPalette.textSecondary).lineLimit(2)
-                        }
-                        Spacer(minLength: 2)
-                        Button { onDismissTip(tip.id) } label: {
-                            Image(systemName: "xmark").font(.system(size: 8, weight: .bold))
-                                .foregroundStyle(MenuPalette.textSecondary).padding(4)
-                                .background(Color.white.opacity(0.08), in: Circle())
-                        }.buttonStyle(.plain).help(L10n.tr("30 天内不再显示", "Dismiss for 30 days", "Скрыть на 30 дней"))
+    @ViewBuilder private var healthTab: some View {
+        if let s = stats {
+            let diskUsed = s.diskTotal > 0 ? Double(s.diskTotal - s.diskFree) / Double(s.diskTotal) : 0
+            VStack(alignment: .leading, spacing: 12) {
+                // Grid rows take their tallest tile's height, so the four tiles line up
+                // and the panel's natural height always holds them.
+                Grid(horizontalSpacing: 10, verticalSpacing: 10) {
+                    GridRow {
+                        MetricTile(series: MenuWorld.cpu, label: "CPU",
+                                   figure: percent(s.cpuUsage), fraction: s.cpuUsage,
+                                   sub: L10n.tr("全部核心", "All cores", "Все ядра"),
+                                   note: s.cpuUsage > 0.85 ? L10n.tr("繁忙", "Busy", "Нагрузка") : nil,
+                                   opens: "optimization", opensName: L10n.tr("优化", "Optimization", "Оптимизация"))
+                        MetricTile(series: MenuWorld.memory, label: L10n.tr("内存", "Memory", "Память"),
+                                   figure: percent(s.memoryPressure), fraction: s.memoryPressure,
+                                   sub: s.swapUsed > 0 ? HealthAlertStrings.swapLine(s.swapUsed) : L10n.tr("已用 \(FileSizeFormatter.format(s.memoryUsed))", "\(FileSizeFormatter.format(s.memoryUsed)) used", "Занято \(FileSizeFormatter.format(s.memoryUsed))"),
+                                   note: s.memoryPressure > 0.85 ? L10n.tr("偏高", "High", "Высокая") : nil,
+                                   opens: "optimization", opensName: L10n.tr("优化", "Optimization", "Оптимизация"))
                     }
-                    Button { TipAction.open(moduleID: MenuTipRouting.moduleID(forTipID: tip.id)) } label: {
-                        Text(tipCTA(tip)).font(.system(size: 11, weight: .bold)).foregroundStyle(Color(red:0.16,green:0.10,blue:0.30))
-                            .frame(maxWidth: .infinity).padding(.vertical, 6)
-                            .background(MenuPalette.yellow, in: RoundedRectangle(cornerRadius: 7, style: .continuous))
-                    }.buttonStyle(.plain)
+                    GridRow {
+                        MetricTile(series: MenuWorld.disk, label: L10n.tr("磁盘", "Disk", "Диск"),
+                                   figure: FileSizeFormatter.format(s.diskFree), fraction: diskUsed,
+                                   sub: L10n.tr("可用，共 \(FileSizeFormatter.format(s.diskTotal))", "free of \(FileSizeFormatter.format(s.diskTotal))", "свободно из \(FileSizeFormatter.format(s.diskTotal))"),
+                                   note: diskUsed > 0.9 ? L10n.tr("空间不足", "Low space", "Мало места") : nil,
+                                   shortNote: L10n.tr("不足", "Low", "Мало"),
+                                   opens: "space-lens", opensName: L10n.tr("空间地图", "Space Map", "Карта диска"))
+                        if let level = s.batteryLevel {
+                            MetricTile(series: MenuWorld.battery, label: L10n.tr("电池", "Battery", "Аккумулятор"),
+                                       figure: percent(level), fraction: level,
+                                       sub: s.batteryIsCharging ? L10n.tr("充电中", "Charging", "Заряжается") : (level >= 0.99 ? L10n.tr("已充满", "Fully charged", "Заряжен") : L10n.tr("未在充电", "Not charging", "Не заряжается")),
+                                       note: level < 0.2 && !s.batteryIsCharging ? L10n.tr("电量低", "Low", "Низкий") : nil)
+                        } else {
+                            MetricTile(series: MenuWorld.battery, label: L10n.tr("运行时间", "Uptime", "Время работы"),
+                                       figure: formatUptime(s.uptime), fraction: nil,
+                                       sub: L10n.tr("自上次重启", "Since last restart", "С перезагрузки"))
+                        }
+                    }
+                }
+                statusLine
+            }
+        } else {
+            ProgressView()
+                .controlSize(.small)
+                .frame(maxWidth: .infinity, minHeight: 200)
+        }
+    }
+
+    /// Network speed on the left, protection state on the right.
+    private var statusLine: some View {
+        HStack(spacing: 14) {
+            if let net = networkSpeed {
+                Label(net.formattedIn, systemImage: "arrow.down")
+                Label(net.formattedOut, systemImage: "arrow.up")
+            }
+            Spacer(minLength: 6)
+            if let p = protection {
+                if p.threatsFound > 0 {
+                    Button { TipAction.open(moduleID: "malware") } label: {
+                        Label(L10n.tr("发现 \(p.threatsFound) 个威胁", "\(p.threatsFound) threat\(p.threatsFound == 1 ? "" : "s") found", "Угроз: \(p.threatsFound)"),
+                              systemImage: "exclamationmark.shield.fill")
+                            .foregroundStyle(alertInk)
+                    }
+                    .buttonStyle(.plain)
+                } else {
+                    Label(p.isStale ? L10n.tr("扫描已过期", "Scan is due", "Пора проверить") : L10n.tr("未发现威胁", "No threats found", "Угроз не найдено"),
+                          systemImage: p.isStale ? "shield" : "checkmark.shield.fill")
+                        .help(L10n.tr("上次扫描：\(relativeTime(p.lastScanDate))", "Last malware scan \(relativeTime(p.lastScanDate))", "Последняя проверка \(relativeTime(p.lastScanDate))"))
                 }
             }
         }
-        .padding(11)
-        .glassCard()
+        .font(.system(size: 12))
+        .monospacedDigit()
+        .foregroundStyle(softInk)
+        .labelStyle(.titleAndIcon)
+    }
+
+    // MARK: Tips
+
+    @ViewBuilder private var tipsTab: some View {
+        if tips.isEmpty {
+            emptyState(symbol: "checkmark", title: L10n.tr("一切正常", "Nothing needs attention", "Всё в порядке"),
+                       detail: L10n.tr("Sheen 发现值得清理的内容时，建议会显示在这里。", "Tips show up here when Sheen spots something worth cleaning.", "Советы появятся, когда Sheen найдёт, что стоит очистить."))
+        } else {
+            VStack(alignment: .leading, spacing: 10) {
+                ForEach(tips.prefix(3)) { tip in tipRow(tip) }
+            }
+        }
+    }
+
+    private func tipRow(_ tip: TipsEngine.Tip) -> some View {
+        HStack(alignment: .top, spacing: 10) {
+            MenuTile(symbol: tip.symbol, series: tipSeries(tip), size: 26)
+            VStack(alignment: .leading, spacing: 3) {
+                Text(tip.title)
+                    .font(.system(size: 13, weight: .semibold))
+                    .fixedSize(horizontal: false, vertical: true)
+                Text(tip.body)
+                    .font(.system(size: 12))
+                    .foregroundStyle(softInk)
+                    .lineLimit(2)
+                Button(tipCTA(tip)) { TipAction.open(moduleID: MenuTipRouting.moduleID(forTipID: tip.id)) }
+                    .buttonStyle(MenuPillStyle(compact: true))
+                    .padding(.top, 6)
+            }
+            Spacer(minLength: 0)
+            Button { onDismissTip(tip.id) } label: {
+                Image(systemName: "xmark")
+                    .font(.system(size: 9, weight: .bold))
+                    .foregroundStyle(softInk)
+                    .frame(width: 20, height: 20)
+                    .background(ink.opacity(0.08), in: Circle())
+            }
+            .buttonStyle(.plain)
+            .help(L10n.tr("30 天内不再显示", "Dismiss for 30 days", "Скрыть на 30 дней"))
+            .accessibilityLabel(L10n.tr("30 天内不再显示", "Dismiss for 30 days", "Скрыть на 30 дней"))
+        }
+        .padding(12)
+        .background(MenuPanelFill())
+        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
     }
 
     private func tipCTA(_ tip: TipsEngine.Tip) -> String {
         switch tip.id {
-        case "trash_large": return L10n.tr("清空废纸篓", "Empty Trash", "Очистить Корзину")
-        case "caches_large": return L10n.tr("释放空间", "Free Up Space", "Освободить место")
+        case "trash_large": return L10n.tr("打开废纸篓", "Open Trash Bins", "Открыть Корзины")
+        case "caches_large": return L10n.tr("打开系统垃圾", "Open System Junk", "Открыть системный мусор")
         default: return L10n.tr("打开 \(MCConstants.appName)", "Open \(MCConstants.appName)", "Открыть \(MCConstants.appName)")
         }
     }
 
-    // MARK: Protection
-
-    private func protectionCard(_ p: SharedAppState.ProtectionStatus) -> some View {
-        let tint = p.threatsFound > 0 ? Color(red:0.98,green:0.42,blue:0.45) : (p.isStale ? MenuPalette.yellow : MenuPalette.teal)
-        return HStack(spacing: 10) {
-            ZStack {
-                Circle().fill(tint.opacity(0.18)).frame(width: 30, height: 30)
-                Image(systemName: p.threatsFound > 0 ? "exclamationmark.shield.fill" : "checkmark.shield.fill")
-                    .font(.system(size: 14, weight: .semibold)).foregroundStyle(tint)
-            }
-            VStack(alignment: .leading, spacing: 1) {
-                Text(p.threatsFound > 0 ? L10n.tr("发现 \(p.threatsFound) 个威胁", "\(p.threatsFound) threat\(p.threatsFound == 1 ? "" : "s") found", "\(p.threatsFound) \(L10n.russianPlural(p.threatsFound, one: "угроза обнаружена", few: "угрозы обнаружены", many: "угроз обнаружено"))") : L10n.tr("已防护", "Protected", "Под защитой"))
-                    .font(.system(size: 12, weight: .semibold)).foregroundStyle(.white)
-                Text(L10n.tr(
-                    "上次扫描：\(relativeTime(p.lastScanDate)) · \(p.localizedScanDepth)",
-                    "Scanned \(relativeTime(p.lastScanDate)) · \(p.localizedScanDepth)",
-                    "Проверено \(relativeTime(p.lastScanDate)) · \(p.localizedScanDepth)"
-                ))
-                    .font(.system(size: 10)).foregroundStyle(MenuPalette.textSecondary)
-            }
-            Spacer()
+    /// A tip's tile takes the colour of the section its action opens.
+    private func tipSeries(_ tip: TipsEngine.Tip) -> MenuWorld.Series {
+        switch MenuTipRouting.moduleID(forTipID: tip.id) {
+        case "trash-bins", "system-junk": MenuWorld.cleanup
+        default: MenuWorld.home
         }
-        .padding(11).glassCard()
     }
 
-    // MARK: Connected devices
+    // MARK: Devices
 
-    private func devicesCard(_ d: ConnectedDevices) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            sectionHeader(icon: "externaldrive.connected.to.line.below", title: L10n.tr("已连接", "Connected", "Подключено"), tint: MenuPalette.teal)
-            ForEach(d.externalVolumes) { v in
-                HStack(spacing: 7) {
-                    Image(systemName: "externaldrive.fill").font(.system(size: 10)).foregroundStyle(MenuPalette.teal.opacity(0.8))
-                    Text(v.name).font(.system(size: 11)).foregroundStyle(.white).lineLimit(1)
-                    Spacer(minLength: 6)
-                    Text(L10n.tr("\(FileSizeFormatter.format(v.freeBytes)) 可用", "\(FileSizeFormatter.format(v.freeBytes)) free", "Свободно: \(FileSizeFormatter.format(v.freeBytes))")).font(.system(size: 10, design: .monospaced)).foregroundStyle(MenuPalette.textSecondary)
+    @ViewBuilder private var devicesTab: some View {
+        if let d = devices, d.hasAny {
+            VStack(alignment: .leading, spacing: 0) {
+                ForEach(d.externalVolumes) { volume in
+                    deviceRow(symbol: "externaldrive.fill", title: volume.name,
+                              detail: L10n.tr("\(FileSizeFormatter.format(volume.freeBytes)) 可用", "\(FileSizeFormatter.format(volume.freeBytes)) free", "Свободно: \(FileSizeFormatter.format(volume.freeBytes))"))
+                }
+                if d.externalDisplays > 0 {
+                    deviceRow(symbol: "display", title: L10n.tr("\(d.externalDisplays) 台外接显示器", "\(d.externalDisplays) external display\(d.externalDisplays == 1 ? "" : "s")", "Внешних дисплеев: \(d.externalDisplays)"), detail: nil)
                 }
             }
-            if d.externalDisplays > 0 {
-                HStack(spacing: 7) {
-                    Image(systemName: "display").font(.system(size: 10)).foregroundStyle(MenuPalette.teal.opacity(0.8))
-                    Text(L10n.tr("\(d.externalDisplays) 台外接显示器", "\(d.externalDisplays) external display\(d.externalDisplays == 1 ? "" : "s")", "\(d.externalDisplays) \(L10n.russianPlural(d.externalDisplays, one: "внешний дисплей", few: "внешних дисплея", many: "внешних дисплеев"))")).font(.system(size: 11)).foregroundStyle(.white)
-                    Spacer()
-                }
+            .padding(.vertical, 4)
+            .background(MenuPanelFill())
+            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+        } else {
+            emptyState(symbol: "externaldrive.badge.questionmark", title: L10n.tr("没有外接设备", "No external devices", "Нет внешних устройств"),
+                       detail: L10n.tr("连接的磁盘和显示器会显示在这里。", "Connected drives and displays show up here.", "Подключённые диски и дисплеи появятся здесь."))
+        }
+    }
+
+    private func deviceRow(symbol: String, title: String, detail: String?) -> some View {
+        HStack(spacing: 10) {
+            MenuTile(symbol: symbol, series: MenuWorld.memory, size: 24)
+            Text(title).font(.system(size: 13)).lineLimit(1)
+            Spacer(minLength: 6)
+            if let detail {
+                Text(detail).font(.system(size: 12)).monospacedDigit().foregroundStyle(softInk)
             }
         }
-        .padding(11).glassCard()
+        .padding(.horizontal, 12)
+        .padding(.vertical, 8)
+        .accessibilityElement(children: .combine)
+    }
+
+    private func emptyState(symbol: String, title: String, detail: String) -> some View {
+        VStack(spacing: 10) {
+            MenuTile(symbol: symbol, series: MenuWorld.home, size: 36)
+            Text(title).font(.system(size: 15, weight: .semibold))
+            Text(detail)
+                .font(.system(size: 12))
+                .foregroundStyle(softInk)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .frame(maxWidth: .infinity, minHeight: 200)
+        .padding(.horizontal, 20)
     }
 
     // MARK: Footer
 
     private var footer: some View {
-        HStack(spacing: 8) {
-            Button {
+        HStack(spacing: 14) {
+            Button { TipAction.open() } label: {
+                Text(L10n.tr("打开 \(MCConstants.appName)", "Open \(MCConstants.appName)", "Открыть \(MCConstants.appName)"))
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(MenuPillStyle())
+            Button(L10n.tr("退出", "Quit", "Выйти")) {
                 MenuBarKeepAlive.setUserQuit(true, defaults: SharedAppState.defaults)
                 NSApplication.shared.terminate(nil)
-            } label: {
-                Image(systemName: "power").font(.system(size: 12, weight: .bold)).foregroundStyle(.white)
-                    .frame(width: 34, height: 32)
-                    .background(MenuPalette.red, in: RoundedRectangle(cornerRadius: 9, style: .continuous))
-            }.buttonStyle(.plain).help(L10n.tr("退出监视器", "Quit Monitor", "Закрыть виджет"))
-
-            Button { TipAction.open() } label: {
-                HStack(spacing: 6) {
-                    Image(systemName: "leaf.fill").font(.system(size: 11, weight: .bold))
-                    Text(L10n.tr("打开 \(MCConstants.appName)", "Open \(MCConstants.appName)", "Открыть \(MCConstants.appName)")).font(.system(size: 12, weight: .bold))
-                }
-                .foregroundStyle(.white)
-                .frame(maxWidth: .infinity).padding(.vertical, 8)
-                .background(MenuPalette.green, in: RoundedRectangle(cornerRadius: 9, style: .continuous))
-            }.buttonStyle(.plain)
+            }
+            .buttonStyle(.plain)
+            .font(.system(size: 13))
+            .foregroundStyle(softInk)
+            .help(L10n.tr("退出菜单栏监视器。可在 Sheen 设置中重新打开。", "Quit the menu bar monitor. Turn it back on in Sheen's Settings.", "Закрыть виджет. Включить снова можно в настройках Sheen."))
         }
     }
 
-    // MARK: Helpers
+    // MARK: Formatting
 
-    private func sectionHeader(icon: String, title: String, tint: Color) -> some View {
-        HStack(spacing: 7) {
-            Image(systemName: icon).font(.system(size: 11, weight: .semibold)).foregroundStyle(tint)
-            Text(title).font(.system(size: 11, weight: .semibold)).foregroundStyle(.white)
-            Spacer()
-        }
-    }
+    private func percent(_ value: Double) -> String { "\(Int((min(max(value, 0), 1) * 100).rounded()))%" }
 
     private func formatUptime(_ seconds: TimeInterval) -> String {
         let h = Int(seconds) / 3600, m = (Int(seconds) % 3600) / 60
@@ -414,37 +459,212 @@ struct MenuContentView: View {
     }
 }
 
-// MARK: - Ring gauge
+// MARK: - Metric tile
 
-struct RingGauge: View {
-    let value: Double
-    let color: Color
-    let center: String
+/// One health figure in its section's colours. Clicking it opens the tool
+/// that acts on it.
+private struct MetricTile: View {
+    let series: MenuWorld.Series
+    let label: String
+    let figure: String
+    let fraction: Double?
+    var sub: String?
+    var note: String?
+    var shortNote: String?
+    var opens: String?
+    var opensName: String?
+    @Environment(\.colorScheme) private var scheme
+    @State private var hovering = false
+
+    var body: some View {
+        if let opens {
+            Button { TipAction.open(moduleID: opens) } label: { face }
+                .buttonStyle(.plain)
+                .onHover { hovering = $0 }
+                .help(opensName.map { L10n.tr("打开\($0)", "Open \($0)", "Открыть: \($0)") } ?? "")
+                .accessibilityHint(opensName.map { L10n.tr("打开\($0)", "Opens \($0)", "Открывает: \($0)") } ?? "")
+        } else {
+            face
+        }
+    }
+
+    private var ink: Color { scheme == .dark ? .white : MenuWorld.ink }
+    private var alertInk: Color { scheme == .dark ? MenuWorld.alert.top : MenuWorld.alert.bottom }
+
+    private var face: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 6) {
+                MenuTile(symbol: series.symbol, series: series, size: 22)
+                Text(label).font(.system(size: 13, weight: .medium)).lineLimit(1).fixedSize()
+                Spacer(minLength: 0)
+                if let note {
+                    // A value past its threshold says so, in the Protection rose;
+                    // the short form takes over when the long one won't fit.
+                    ViewThatFits(in: .horizontal) {
+                        Text(note)
+                        Text(shortNote ?? note)
+                    }
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundStyle(alertInk)
+                    .lineLimit(1)
+                }
+            }
+            Text(figure)
+                .font(.system(size: 28, weight: .light))
+                .monospacedDigit()
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+                .contentTransition(.numericText())
+                .animation(.easeOut(duration: 0.25), value: figure)
+            if let fraction {
+                MeterBar(fraction: fraction, series: note == nil ? series : MenuWorld.alert)
+            }
+            if let sub {
+                Text(sub).font(.system(size: 11)).foregroundStyle(ink.opacity(0.72)).lineLimit(1).minimumScaleFactor(0.85)
+            }
+        }
+        .padding(12)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .background(MenuPanelFill(lifted: hovering))
+        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .contentShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .animation(.easeOut(duration: 0.15), value: hovering)
+        .accessibilityElement(children: .combine)
+    }
+}
+
+/// A slim track with the metric's gradient filled to `fraction`.
+private struct MeterBar: View {
+    let fraction: Double
+    let series: MenuWorld.Series
+    @Environment(\.colorScheme) private var scheme
+
+    var body: some View {
+        GeometryReader { geometry in
+            ZStack(alignment: .leading) {
+                Capsule().fill(scheme == .dark ? Color.white.opacity(0.12) : MenuWorld.mid.opacity(0.12))
+                Capsule()
+                    .fill(LinearGradient(colors: [series.top, series.bottom], startPoint: .leading, endPoint: .trailing))
+                    .frame(width: max(geometry.size.width * CGFloat(min(max(fraction, 0), 1)), 5))
+                    .animation(.easeOut(duration: 0.35), value: fraction)
+            }
+        }
+        .frame(height: 5)
+        .accessibilityHidden(true)
+    }
+}
+
+/// The app's list-panel recipe: system material with the room laid over it.
+private struct MenuPanelFill: View {
+    var lifted = false
+    @Environment(\.colorScheme) private var scheme
 
     var body: some View {
         ZStack {
-            Circle().stroke(Color.white.opacity(0.12), lineWidth: 5)
-            Circle()
-                .trim(from: 0, to: min(max(value, 0), 1))
-                .stroke(color.gradient, style: StrokeStyle(lineWidth: 5, lineCap: .round))
-                .rotationEffect(.degrees(-90))
-            Text(center).font(.system(size: 13, weight: .bold, design: .rounded)).foregroundStyle(.white)
+            Rectangle().fill(.ultraThinMaterial)
+            Rectangle().fill(scheme == .dark ? MenuWorld.deep.opacity(0.55) : MenuWorld.paleTop.opacity(0.55))
+            if lifted {
+                Rectangle().fill(scheme == .dark ? Color.white.opacity(0.11) : MenuWorld.mid.opacity(0.08))
+            }
+        }
+        .overlay {
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .strokeBorder(scheme == .dark ? Color.white.opacity(0.07) : Color.white.opacity(0.75), lineWidth: 0.75)
         }
     }
 }
 
-// MARK: - Glass card modifier
+/// The bullet tile from the app: a rounded square in a section gradient with
+/// a white glyph (an SF Symbol, or Sheen's own mark).
+struct MenuTile: View {
+    let symbol: String
+    let series: MenuWorld.Series
+    var size: CGFloat = 22
 
-private extension View {
-    func glassCard(cornerRadius: CGFloat = 14) -> some View {
-        self
-            .background(MenuPalette.card.opacity(0.45),
-                        in: RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
-            .background(.ultraThinMaterial.opacity(0.30),
-                        in: RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
+    var body: some View {
+        let shape = RoundedRectangle(cornerRadius: size * 0.28, style: .continuous)
+        shape
+            .fill(LinearGradient(colors: [series.top, series.bottom], startPoint: .topLeading, endPoint: .bottomTrailing))
+            .overlay { shape.fill(LinearGradient(colors: [.white.opacity(0.38), .white.opacity(0)], startPoint: .top, endPoint: .center)) }
+            .overlay { shape.strokeBorder(.white.opacity(0.32), lineWidth: 0.75) }
             .overlay {
-                RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                    .strokeBorder(Color.white.opacity(0.08), lineWidth: 0.5)
+                Image(systemName: symbol)
+                    .font(.system(size: size * 0.44, weight: .semibold))
+                    .foregroundStyle(.white)
+                    .shadow(color: MenuWorld.deep.opacity(0.35), radius: 1, y: 1)
             }
+            .frame(width: size, height: size)
+            .shadow(color: MenuWorld.deep.opacity(0.28), radius: 4, y: 2)
+            .accessibilityHidden(true)
+    }
+}
+
+/// The panel's single action: a white pill in the dark room, the Midnight
+/// gradient with a white label in the light one.
+private struct MenuPillStyle: ButtonStyle {
+    /// The small version used on tip actions.
+    var compact = false
+
+    func makeBody(configuration: Configuration) -> some View {
+        MenuPillFace(configuration: configuration, compact: compact)
+    }
+}
+
+private struct MenuPillFace: View {
+    let configuration: ButtonStyleConfiguration
+    let compact: Bool
+    @Environment(\.colorScheme) private var scheme
+    @State private var hovering = false
+
+    var body: some View {
+        let dark = scheme == .dark
+        configuration.label
+            .font(.system(size: compact ? 12 : 14, weight: .semibold))
+            .foregroundStyle(dark ? MenuWorld.pillLabel : .white)
+            .frame(height: compact ? 24 : 36)
+            .padding(.horizontal, compact ? 12 : 18)
+            .background {
+                Capsule().fill(dark
+                               ? AnyShapeStyle(LinearGradient(colors: [.white, .white.opacity(0.88)], startPoint: .top, endPoint: .bottom))
+                               : AnyShapeStyle(LinearGradient(colors: [MenuWorld.mid, MenuWorld.midIntoDeep], startPoint: .top, endPoint: .bottom)))
+            }
+            .shadow(color: MenuWorld.deep.opacity(dark ? 0.5 : 0.25), radius: hovering ? 10 : 6, y: hovering ? 5 : 3)
+            .brightness(configuration.isPressed ? -0.06 : (hovering ? 0.03 : 0))
+            .scaleEffect(configuration.isPressed ? 0.97 : 1)
+            .contentShape(Capsule())
+            .onHover { hovering = $0 }
+            .animation(.easeOut(duration: 0.16), value: hovering)
+            .animation(.easeOut(duration: 0.1), value: configuration.isPressed)
+    }
+}
+
+/// A segmented control that spans its full width with equal segments
+/// (SwiftUI's segmented picker sizes to its labels on macOS).
+private struct FullWidthSegments: NSViewRepresentable {
+    let titles: [String]
+    @Binding var selection: Int
+
+    func makeNSView(context: Context) -> NSSegmentedControl {
+        let control = NSSegmentedControl(labels: titles, trackingMode: .selectOne,
+                                         target: context.coordinator, action: #selector(Coordinator.changed(_:)))
+        control.segmentDistribution = .fillEqually
+        control.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        return control
+    }
+
+    func updateNSView(_ control: NSSegmentedControl, context: Context) {
+        context.coordinator.selection = $selection
+        for (index, title) in titles.enumerated() where control.label(forSegment: index) != title {
+            control.setLabel(title, forSegment: index)
+        }
+        control.selectedSegment = selection
+    }
+
+    func makeCoordinator() -> Coordinator { Coordinator(selection: $selection) }
+
+    @MainActor final class Coordinator: NSObject {
+        var selection: Binding<Int>
+        init(selection: Binding<Int>) { self.selection = selection }
+        @objc func changed(_ sender: NSSegmentedControl) { selection.wrappedValue = sender.selectedSegment }
     }
 }

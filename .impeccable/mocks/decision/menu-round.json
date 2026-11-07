@@ -1,0 +1,46 @@
+{
+  "title": "Sheen's menu bar panel",
+  "question": "Three ways to lay out the menu bar panel in Sheen's design. Pick the one that reads best at a glance.",
+  "options": [
+    {
+      "id": "headline",
+      "kind": "assigned",
+      "label": "Headline and bars",
+      "kicker": "THE ROLL",
+      "thesis": "One big light figure says how your Mac is doing; three slim bars give the rest.",
+      "palette": ["#0B0A2E", "#2B2384", "#37C8FF", "#FFC54D", "#CB8EFF", "#45E8B0"],
+      "materials": ["glass status orb", "tile-gradient bars"],
+      "viewport": "Free disk space as a 46pt light figure beside a small glass orb, then CPU, memory and battery bars, one tip, and the Open Sheen pill.",
+      "risk": "Disk space leads even when the CPU is the busy one, unless the headline follows whatever needs attention.",
+      "html": ".impeccable/mocks/decision/menu-headline.html",
+      "htmlFrame": "360x560"
+    },
+    {
+      "id": "tabs",
+      "kind": "dealt",
+      "label": "Tabs",
+      "thesis": "Health, Tips and Devices each get their own tab, so the panel stays short.",
+      "palette": ["#0B0A2E", "#2B2384", "#FFC54D", "#CB8EFF", "#62BCFF", "#45E8B0"],
+      "materials": ["segmented control", "four figure tiles"],
+      "viewport": "A segmented control under the wordmark; Health shows four tiles with light figures and bars, then the network line and the pill.",
+      "risk": "Tips hide behind a tab, so a glance can miss one that matters.",
+      "html": ".impeccable/mocks/decision/menu-tabs.html",
+      "htmlFrame": "360x560"
+    },
+    {
+      "id": "rings",
+      "kind": "dealt",
+      "label": "Glass rings",
+      "thesis": "CPU, memory and disk as three nested glass rings around a status core.",
+      "palette": ["#0B0A2E", "#2B2384", "#F0561A", "#7434E6", "#2F57F5", "#22B5F5"],
+      "materials": ["concentric glass rings", "figure chips"],
+      "viewport": "A 150pt ring cluster beside a three-row legend, then free space, battery and network chips, one tip, and the pill.",
+      "risk": "Rings show proportion well but exact numbers live in the legend, one look away.",
+      "html": ".impeccable/mocks/decision/menu-rings.html",
+      "htmlFrame": "360x560"
+    }
+  ],
+  "reroll": true,
+  "steer": true,
+  "buildPath": { "value": "code" }
+}

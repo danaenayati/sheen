@@ -1,0 +1,36 @@
+<!doctype html><html><head><meta charset="utf-8"><style>*{box-sizing:border-box;margin:0;padding:0}
+:root{--deep:#0B0A2E;--mid:#2B2384;--glow:#37C8FF;--tt:#7E6BFF;--tb:#22B5F5;--spark:#5BE3FF;
+--c1:#45E8B0;--c2:#0A9A7B;--p1:#FFC54D;--p2:#F0561A;--r1:#FF7B9C;--r2:#C71A5A;--f1:#CB8EFF;--f2:#7434E6;--a1:#62BCFF;--a2:#2F57F5}
+html,body{width:360px;height:560px;font-family:-apple-system,"SF Pro Text",system-ui,sans-serif;color:#fff;overflow:hidden}
+body{background:radial-gradient(260px 220px at 26% 30%,rgba(55,200,255,.40),transparent 70%),radial-gradient(240px 200px at 100% 0%,rgba(43,35,132,.75),transparent 70%),linear-gradient(150deg,#0B0A2E,#1d1866 55%,#0B0A2E);padding:16px;display:flex;flex-direction:column;gap:14px}
+.brand{display:flex;align-items:center;gap:8px;font:600 15px/1 -apple-system}
+.brand i{width:18px;height:18px;border-radius:5px;background:linear-gradient(160deg,#9AE8FF,#37C8FF)}
+.soft{color:rgba(255,255,255,.72)}
+.tile{width:26px;height:26px;border-radius:7px;flex:none;box-shadow:0 3px 6px rgba(11,10,46,.35);background:linear-gradient(135deg,var(--a),var(--b));position:relative}
+.tile:after{content:"";position:absolute;inset:0;border-radius:7px;background:linear-gradient(#ffffff60,#fff0 55%)}
+.row{display:flex;align-items:center;gap:10px}
+.bar{height:5px;border-radius:3px;background:rgba(255,255,255,.12);overflow:hidden}
+.bar b{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,var(--a),var(--b))}
+.panel{border-radius:12px;background:rgba(11,10,46,.55);padding:12px}
+.pill{height:36px;border-radius:18px;background:linear-gradient(#fff,#ffffffe0);color:#211b6b;font:600 14px/36px -apple-system;text-align:center}
+.foot{margin-top:auto;display:flex;align-items:center;gap:12px}
+.foot .pill{flex:1}
+
+.seg{display:flex;background:rgba(255,255,255,.1);border-radius:9px;padding:3px;gap:3px}
+.seg div{flex:1;text-align:center;font:500 12px/26px -apple-system;border-radius:7px;color:rgba(255,255,255,.75)}
+.seg .on{background:rgba(255,255,255,.9);color:#211b6b;font-weight:600}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cell{border-radius:12px;background:rgba(11,10,46,.55);padding:12px;display:flex;flex-direction:column;gap:10px}
+.fig{font:300 30px/1 -apple-system,"SF Pro Display";letter-spacing:-.5px}
+</style></head><body>
+<div class="brand"><i></i>Sheen</div>
+<div class="seg"><div class="on">Health</div><div>Tips · 2</div><div>Devices</div></div>
+<div class="grid">
+<div class="cell" style="--a:var(--p1);--b:var(--p2)"><div class="row"><div class="tile"></div><span style="font:500 13px -apple-system">CPU</span></div><div class="fig">12%</div><div class="bar"><b style="width:12%"></b></div></div>
+<div class="cell" style="--a:var(--f1);--b:var(--f2)"><div class="row"><div class="tile"></div><span style="font:500 13px -apple-system">Memory</span></div><div class="fig">61%</div><div class="bar"><b style="width:61%"></b></div></div>
+<div class="cell" style="--a:var(--a1);--b:var(--a2)"><div class="row"><div class="tile"></div><span style="font:500 13px -apple-system">Disk</span></div><div class="fig">142 GB</div><div class="soft" style="font:400 12px -apple-system">free of 494 GB</div></div>
+<div class="cell" style="--a:var(--c1);--b:var(--c2)"><div class="row"><div class="tile"></div><span style="font:500 13px -apple-system">Battery</span></div><div class="fig">84%</div><div class="bar"><b style="width:84%"></b></div></div>
+</div>
+<div class="row soft" style="font:400 12px -apple-system;gap:18px"><span>↓ 1.2 MB/s</span><span>↑ 220 KB/s</span><span>Up 3 days</span></div>
+<div class="foot"><div class="pill">Open Sheen</div><span class="soft" style="font:400 13px -apple-system">Quit</span></div>
+</body></html>
