@@ -235,6 +235,7 @@ struct MenuContentView: View {
 
     @ViewBuilder private var healthTab: some View {
         if let s = stats {
+            let thermal = ProcessInfo.processInfo.thermalState
             let diskUsed = s.diskTotal > 0 ? Double(s.diskTotal - s.diskFree) / Double(s.diskTotal) : 0
             VStack(alignment: .leading, spacing: 12) {
                 // Grid rows take their tallest tile's height, so the four tiles line up
@@ -243,8 +244,10 @@ struct MenuContentView: View {
                     GridRow {
                         MetricTile(series: MenuWorld.cpu, label: "CPU",
                                    figure: percent(s.cpuUsage), fraction: s.cpuUsage,
-                                   sub: L10n.tr("全部核心", "All cores", "Все ядра"),
-                                   note: s.cpuUsage > 0.85 ? L10n.tr("繁忙", "Busy", "Нагрузка") : nil,
+                                   sub: thermalLine(thermal),
+                                   note: thermal == .serious || thermal == .critical
+                                       ? L10n.tr("过热", "Hot", "Перегрев")
+                                       : (s.cpuUsage > 0.85 ? L10n.tr("繁忙", "Busy", "Нагрузка") : nil),
                                    opens: "optimization", opensName: L10n.tr("优化", "Optimization", "Оптимизация"))
                         MetricTile(series: MenuWorld.memory, label: L10n.tr("内存", "Memory", "Память"),
                                    figure: percent(s.memoryPressure), fraction: s.memoryPressure,
@@ -262,8 +265,9 @@ struct MenuContentView: View {
                         if let level = s.batteryLevel {
                             MetricTile(series: MenuWorld.battery, label: L10n.tr("电池", "Battery", "Аккумулятор"),
                                        figure: percent(level), fraction: level,
-                                       sub: s.batteryIsCharging ? L10n.tr("充电中", "Charging", "Заряжается") : (level >= 0.99 ? L10n.tr("已充满", "Fully charged", "Заряжен") : L10n.tr("未在充电", "Not charging", "Не заряжается")),
-                                       note: level < 0.2 && !s.batteryIsCharging ? L10n.tr("电量低", "Low", "Низкий") : nil)
+                                       sub: batteryLine(s, level: level),
+                                       note: level < 0.2 && !s.batteryIsCharging ? L10n.tr("电量低", "Low", "Низкий") : nil,
+                                       symbol: s.batteryIsCharging ? "battery.100.bolt" : nil)
                         } else {
                             MetricTile(series: MenuWorld.battery, label: L10n.tr("运行时间", "Uptime", "Время работы"),
                                        figure: formatUptime(s.uptime), fraction: nil,
@@ -442,6 +446,30 @@ struct MenuContentView: View {
 
     // MARK: Formatting
 
+    /// macOS's own heat reading (the CPU temperature itself is not public).
+    private func thermalLine(_ state: ProcessInfo.ThermalState) -> String {
+        switch state {
+        case .nominal: L10n.tr("温度正常", "Thermals normal", "Температура в норме")
+        case .fair: L10n.tr("略微偏热", "Running warm", "Немного греется")
+        case .serious: L10n.tr("正在降频", "Throttling", "Снижение частоты")
+        case .critical: L10n.tr("温度过高", "Overheating", "Перегрев")
+        @unknown default: L10n.tr("全部核心", "All cores", "Все ядра")
+        }
+    }
+
+    /// Battery wear when macOS reports it, otherwise the charging state.
+    private func batteryLine(_ s: SystemStatsCollector.SystemStats, level: Double) -> String {
+        if let health = s.batteryHealth {
+            let capacity = percent(health)
+            if let cycles = s.batteryCycleCount {
+                return L10n.tr("容量 \(capacity) · \(cycles) 次循环", "\(capacity) capacity · \(cycles) cycles", "Ёмкость \(capacity) · \(cycles) циклов")
+            }
+            return L10n.tr("容量 \(capacity)", "\(capacity) capacity", "Ёмкость \(capacity)")
+        }
+        if s.batteryIsCharging { return L10n.tr("充电中", "Charging", "Заряжается") }
+        return level >= 0.99 ? L10n.tr("已充满", "Fully charged", "Заряжен") : L10n.tr("未在充电", "Not charging", "Не заряжается")
+    }
+
     private func percent(_ value: Double) -> String { "\(Int((min(max(value, 0), 1) * 100).rounded()))%" }
 
     private func formatUptime(_ seconds: TimeInterval) -> String {
@@ -473,6 +501,7 @@ private struct MetricTile: View {
     var shortNote: String?
     var opens: String?
     var opensName: String?
+    var symbol: String?
     @Environment(\.colorScheme) private var scheme
     @State private var hovering = false
 
@@ -494,7 +523,7 @@ private struct MetricTile: View {
     private var face: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 6) {
-                MenuTile(symbol: series.symbol, series: series, size: 22)
+                MenuTile(symbol: symbol ?? series.symbol, series: series, size: 22)
                 Text(label).font(.system(size: 13, weight: .medium)).lineLimit(1).fixedSize()
                 Spacer(minLength: 0)
                 if let note {

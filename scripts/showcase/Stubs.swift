@@ -6,7 +6,7 @@ enum SidebarItem: String, CaseIterable, Hashable {
     case smartScan, systemJunk, mailAttachments, trashBins, diskHogs, projectJunk, cleanHistory
     case malwareRemoval, privacy, browserExtensions, wifiNetworks, appPermissions
     case optimization, maintenance, uninstaller, unusedApps, extensions, updater
-    case spaceLens, largeOldFiles, duplicates, shredder, settings
+    case spaceLens, largeOldFiles, duplicates, shredder, forgottenDownloads, settings
 
     var theme: ModuleTheme {
         switch self {
@@ -15,7 +15,7 @@ enum SidebarItem: String, CaseIterable, Hashable {
         case .malwareRemoval, .privacy, .browserExtensions, .wifiNetworks, .appPermissions: .protection
         case .optimization, .maintenance: .performance
         case .uninstaller, .unusedApps, .extensions, .updater: .applications
-        case .spaceLens, .largeOldFiles, .duplicates, .shredder: .files
+        case .spaceLens, .largeOldFiles, .duplicates, .shredder, .forgottenDownloads: .files
         case .settings: .settings
         }
     }

@@ -14,7 +14,6 @@ public actor HealthMonitor {
     public init() {}
 
     public struct Thresholds: Sendable {
-        public var minimumDiskFreeBytes: UInt64 = 5 * 1024 * 1024 * 1024    // 5 GB
         public var memoryPressureSustained: Double = 0.85
         public var memoryPressureSustainedSamples: Int = 5  // ~15s at 3s poll
         public var batteryHealthFloor: Double = 0.80
@@ -39,13 +38,13 @@ public actor HealthMonitor {
     // MARK: - Individual checks
 
     private func checkLowDisk(stats: SystemStatsCollector.SystemStats) async {
-        guard stats.diskFree < thresholds.minimumDiskFreeBytes else { return }
+        guard let floor = HealthAlertSettings.diskAlertThreshold, stats.diskFree < floor else { return }
         // 15 min throttle — disk fills up gradually; one alert every
         // quarter hour is plenty.
         if SharedAppState.recentlyNotified(kind: "disk_low", throttle: 15 * 60) { return }
         await fire(
             kind: "disk_low",
-            title: L10n.tr("存储空间严重不足", "Storage critical", "Критически мало места"),
+            title: L10n.tr("存储空间不足", "Low on storage", "Мало места на диске"),
             body: L10n.tr("启动磁盘仅剩 \(FileSizeFormatter.format(stats.diskFree)) 可用。打开 \(MCConstants.appName) 释放空间。", "Only \(FileSizeFormatter.format(stats.diskFree)) free on your startup disk. Open \(MCConstants.appName) to free up space.", "На загрузочном диске осталось \(FileSizeFormatter.format(stats.diskFree)). Откройте \(MCConstants.appName), чтобы освободить место.")
         )
     }

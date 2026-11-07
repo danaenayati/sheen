@@ -36,6 +36,7 @@ struct CareHero: View {
         case .updater: UpdateOrbGlass(w: w)
         case .spaceLens: SunburstGlass(w: w)
         case .largeOldFiles: PaperStackGlass(w: w)
+        case .forgottenDownloads: DownloadsTrayGlass(w: w)
         case .duplicates: TwinCardsGlass(w: w)
         case .shredder: ShredderGlass(w: w)
         case .settings: GlassSymbol(name: "gearshape.fill", size: 180, tint: w.glass, thickness: 14)
@@ -590,6 +591,33 @@ private struct PaperStackGlass: View {
                 GlassSlab(shape: SheetFoldShape(), tint: w.pearl, thickness: 2)
             }
             .frame(width: 150, height: 196)
+        }
+    }
+}
+
+/// A download arrow over an open glass tray where forgotten files pile up.
+private struct DownloadsTrayGlass: View {
+    let w: CareWorld
+    var body: some View {
+        ZStack {
+            GlassSlab(shape: RoundedRectangle(cornerRadius: 10, style: .continuous), tint: w.clearGlass, thickness: 6, depth: -0.4)
+                .frame(width: 222, height: 26).offset(y: 30)
+            ParallaxLayer(depth: -0.15) {
+                ZStack {
+                    GlassSlab(shape: SheetShape(), tint: w.sparkGlass, thickness: 6)
+                        .frame(width: 96, height: 124).rotationEffect(.degrees(-12)).offset(x: -48, y: 36)
+                    GlassSlab(shape: SheetShape(), tint: w.glass, thickness: 6)
+                        .frame(width: 96, height: 124).rotationEffect(.degrees(9)).offset(x: 40, y: 30)
+                }
+            }
+            GlassSlab(shape: TaperShape(taper: 0.07, radius: 20), tint: w.clearGlass, thickness: 12, depth: 0)
+                .frame(width: 238, height: 98).offset(y: 92)
+            GlassSymbol(name: "arrow.down", size: 98, tint: w.pearl, weight: .heavy, depth: 0.7)
+                .offset(y: -92)
+            ParallaxLayer(depth: 0.95) {
+                GlassBadge(symbol: "hourglass", tint: w.sparkGlass, ink: .white, size: 56)
+                    .offset(x: 104, y: 112)
+            }
         }
     }
 }

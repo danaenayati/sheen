@@ -16,7 +16,7 @@ struct SpaceLensView: View {
     @State private var isScanning = false
     @State private var scanTask: Task<Void, Never>?
     @State private var nav = SpaceLensNavigation(root: MCConstants.home)
-    @State private var selectedVolume: URL = URL(filePath: "/")
+    @State private var selectedVolume: URL = MCConstants.home
     @StateObject private var scanProgress = SpaceLensScanProgress()
 
     private let scanner = FileTreeScanner()
@@ -68,6 +68,18 @@ struct SpaceLensView: View {
             }
             Spacer()
             if !isScanning {
+                Menu {
+                    Button(L10n.tr("个人文件夹", "Home folder", "Домашняя папка")) { map(MCConstants.home) }
+                    Divider()
+                    ForEach(mountedVolumes, id: \.self) { volume in
+                        Button(Self.displayName(of: volume)) { map(volume) }
+                    }
+                } label: {
+                    Label(locationName, systemImage: "internaldrive")
+                }
+                .menuStyle(.borderlessButton)
+                .fixedSize()
+                .help(L10n.tr("选择要绘制的位置", "Choose what to map", "Выберите, что показать"))
                 Button(L10n.tr("扫描", "Scan", "Сканировать")) { startScan() }
                     .buttonStyle(SuperEllipseButtonStyle(
                         gradient: ModuleTheme.files.buttonGradient,
@@ -77,6 +89,28 @@ struct SpaceLensView: View {
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 16)
+    }
+
+    /// Every disk macOS shows in Finder, startup disk first.
+    private var mountedVolumes: [URL] {
+        FileManager.default.mountedVolumeURLs(includingResourceValuesForKeys: [.volumeNameKey], options: [.skipHiddenVolumes]) ?? []
+    }
+
+    private var locationName: String {
+        selectedVolume == MCConstants.home ? L10n.tr("个人文件夹", "Home folder", "Домашняя папка") : Self.displayName(of: selectedVolume)
+    }
+
+    private static func displayName(of volume: URL) -> String {
+        (try? volume.resourceValues(forKeys: [.volumeNameKey]).volumeName) ?? volume.lastPathComponent
+    }
+
+    /// Start a fresh map at `location` (the home folder or a disk).
+    private func map(_ location: URL) {
+        selectedVolume = location
+        nav = SpaceLensNavigation(root: location)
+        rootNode = nil
+        treemapRects = []
+        startScan()
     }
 
     private var breadcrumbBar: some View {

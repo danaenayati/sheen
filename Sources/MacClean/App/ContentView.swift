@@ -222,6 +222,8 @@ struct ContentView: View {
             SpaceLensView()
         case .largeOldFiles:
             LargeOldFilesView()
+        case .forgottenDownloads:
+            ForgottenDownloadsView()
         case .duplicates:
             DuplicatesView()
         case .shredder:

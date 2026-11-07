@@ -229,15 +229,41 @@ public actor SystemStatsCollector {
 
         let level = maxCapacity > 0 ? Double(currentCapacity) / Double(maxCapacity) : nil
 
-        // Design capacity and cycle count require IOKit SMC access
-        // For now, use the basic power source info
+        let wear = getBatteryWear()
         return BatteryInfo(
             level: level,
-            health: nil,
+            health: wear.health,
             isCharging: isCharging,
-            cycleCount: nil,
+            cycleCount: wear.cycleCount,
             temperature: sensorTemperature
         )
+    }
+
+    /// Battery wear from the public AppleSmartBattery registry entry (no SMC
+    /// access needed): full-charge capacity against design capacity, and the
+    /// charge cycle count. Both nil on Macs without a battery.
+    private func getBatteryWear() -> (health: Double?, cycleCount: Int?) {
+        let service = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceMatching("AppleSmartBattery"))
+        guard service != 0 else { return (nil, nil) }
+        defer { IOObjectRelease(service) }
+        // Apple Silicon keeps the capacities inside the BatteryData dictionary.
+        let batteryData = IORegistryEntryCreateCFProperty(service, "BatteryData" as CFString, kCFAllocatorDefault, 0)?
+            .takeRetainedValue() as? [String: Any]
+        func number(_ key: String) -> Int? {
+            if let value = IORegistryEntryCreateCFProperty(service, key as CFString, kCFAllocatorDefault, 0)?.takeRetainedValue() as? Int {
+                return value
+            }
+            return batteryData?[key] as? Int
+        }
+        let design = number("DesignCapacity")
+        // Nominal charge capacity is the figure closest to System Settings'
+        // "Maximum Capacity"; the raw value is the fallback.
+        let fullCharge = number("NominalChargeCapacity") ?? number("AppleRawMaxCapacity")
+        var health: Double?
+        if let design, design > 0, let fullCharge, fullCharge > 0 {
+            health = min(Double(fullCharge) / Double(design), 1)
+        }
+        return (health, number("CycleCount"))
     }
 
     private func getBatterySensorTemperature() -> Double? {

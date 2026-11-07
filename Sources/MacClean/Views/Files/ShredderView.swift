@@ -13,10 +13,20 @@ struct ShredderView: View {
     @AppStorage(NativeSkin.defaultsKey) private var nativeSkin = true
 
     var body: some View {
-        if nativeSkin && filesToShred.isEmpty && !isProcessing && result == nil {
-            CareIntro(tool: .shredder, action: selectFiles)
-        } else {
-            mainBody
+        Group {
+            if nativeSkin && filesToShred.isEmpty && !isProcessing && result == nil {
+                CareIntro(tool: .shredder, action: selectFiles)
+            } else {
+                mainBody
+            }
+        }
+        // Files dropped anywhere on the window join the list to shred.
+        .dropDestination(for: URL.self) { urls, _ in
+            let files = urls.filter(\.isFileURL)
+            guard !files.isEmpty, !isProcessing else { return false }
+            result = nil
+            filesToShred.append(contentsOf: files.filter { !filesToShred.contains($0) })
+            return true
         }
     }
 

@@ -6,11 +6,15 @@ import Foundation
 public enum HealthAlertSettings {
     public static let memoryPressureAlertKey = "memoryPressureAlertEnabled"
     public static let swapAlertThresholdKey = "swapAlertThresholdGB"
+    public static let diskAlertThresholdKey = "diskAlertThresholdGB"
 
     /// Offered swap thresholds in GB; 0 means the alert is off. Decimal GB
     /// so the size reads "4 GB" through `FileSizeFormatter`, like the swap
     /// figure the widget shows.
     public static let swapThresholdChoices = [0, 2, 4, 8]
+
+    /// Offered low-disk limits in GB; 0 means the alert is off.
+    public static let diskThresholdChoices = [0, 5, 10, 20, 50]
 
     public static func bytes(forGB gigabytes: Int) -> UInt64 {
         UInt64(max(gigabytes, 0)) * 1_000_000_000
@@ -19,6 +23,13 @@ public enum HealthAlertSettings {
     /// On by default, as it was before the setting existed.
     public static var memoryPressureAlertEnabled: Bool {
         SharedAppState.defaults.object(forKey: memoryPressureAlertKey) as? Bool ?? true
+    }
+
+    /// The free-space floor for the low-disk alert; nil when it is off.
+    /// 5 GB until the user picks another limit, as before the setting existed.
+    public static var diskAlertThreshold: UInt64? {
+        let gigabytes = SharedAppState.defaults.object(forKey: diskAlertThresholdKey) as? Int ?? 5
+        return gigabytes > 0 ? bytes(forGB: gigabytes) : nil
     }
 
     /// nil when the swap alert is off (the default).

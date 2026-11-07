@@ -85,6 +85,7 @@ Removals go to the Trash first, a protected-paths guard checks every file, and C
 | App uninstaller and updater | ✅ | ✅ |
 | Disk map | ✅ Space Map | ✅ Space Lens |
 | Large and old files, duplicates | ✅ | ✅ |
+| Forgotten downloads | ✅ | ✅ |
 | Menu bar monitor | ✅ | ✅ |
 | Similar photos | — | ✅ |
 | Cloud storage cleanup | — | ✅ |
@@ -141,6 +142,7 @@ Removals go to the Trash first, a protected-paths guard checks every file, and C
 **Files**
 - Space Map
 - Large & Old Files
+- Forgotten Downloads
 - Duplicates
 - Shredder
 
@@ -191,6 +193,14 @@ Sheen's mark sits in the menu bar, nothing else. Click it for a quick health che
    ```
 
 3. **Full Disk Access.** Some tools (Mail, browser privacy, Trash, Permissions) need it. Add Sheen under **System Settings → Privacy & Security → Full Disk Access**.
+
+**Or with Homebrew:**
+
+```bash
+brew install --cask danaenayati/sheen/sheen
+```
+
+The same first-launch step applies, since Homebrew installs the same app.
 
 Prefer not to run a downloaded app? [Build it yourself](#build-it-yourself) in two commands.
 
@@ -245,7 +255,7 @@ nm -u "$APP" | grep -iE 'URLSession|NWConnection|CFSocket' | sort -u
 strings -a "$APP" | grep -iE 'https?://' | sort -u
 ```
 
-Expected: the only networking class is `_OBJC_CLASS_$_NSURLSession`, and the only fetched endpoints are `api.github.com/repos/danaenayati/sheen/releases/latest` and `mb-api.abuse.ch/api/v1/` (only after you add a MalwareBazaar key). `formulae.brew.sh/api/cask/sheen.json` is only checked when Sheen was installed with Homebrew, which is not offered yet. Other links just open in your browser.
+Expected: the only networking class is `_OBJC_CLASS_$_NSURLSession`, and the only fetched endpoints are `api.github.com/repos/danaenayati/sheen/releases/latest` and `mb-api.abuse.ch/api/v1/` (only after you add a MalwareBazaar key). Other links just open in your browser.
 
 ## Design
 

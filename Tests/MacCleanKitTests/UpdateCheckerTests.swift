@@ -59,26 +59,12 @@ final class UpdateCheckerTests: XCTestCase {
         XCTAssertFalse(UpdateChecker.isHomebrewInstall(caskroomPaths: ["/nonexistent/caskroom/sheen"]))
     }
 
-    // MARK: - Align the updater with what Homebrew can actually deliver
+    // MARK: - Every install checks the GitHub release
 
-    func testParseCaskVersion() {
-        let json = #"{"token":"sheen","version":"1.16.0","homepage":"https://github.com/danaenayati/sheen"}"#
-        XCTAssertEqual(UpdateChecker.parseCaskVersion(Data(json.utf8)), "1.16.0")
-    }
-
-    func testParseCaskVersionRejectsGarbageAndLatest() {
-        XCTAssertNil(UpdateChecker.parseCaskVersion(Data("not json".utf8)))
-        XCTAssertNil(UpdateChecker.parseCaskVersion(Data("{}".utf8)))
-        // ":latest" casks have no comparable version.
-        XCTAssertNil(UpdateChecker.parseCaskVersion(Data(#"{"version":":latest"}"#.utf8)))
-    }
-
-    func testHomebrewInstallsCheckTheCaskAPINotGitHub() {
-        // A Homebrew install must compare against the official cask version
-        // (what `brew upgrade` can deliver), which lags GitHub releases while
-        // autobump catches up, so the popup doesn't tell brew users to run a
-        // command that no-ops.
-        XCTAssertEqual(UpdateChecker.updateSourceURL(isHomebrew: true), MCConstants.homebrewCaskAPI)
+    func testEveryInstallChecksTheGitHubRelease() {
+        // Sheen's cask lives in its own tap, which Homebrew's public API does
+        // not index, so Homebrew installs compare against the GitHub release too.
+        XCTAssertEqual(UpdateChecker.updateSourceURL(isHomebrew: true), MCConstants.latestReleaseAPI)
         XCTAssertEqual(UpdateChecker.updateSourceURL(isHomebrew: false), MCConstants.latestReleaseAPI)
     }
 }

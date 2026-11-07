@@ -153,7 +153,7 @@ struct CareCopy {
                      action: "Check for Updates")
         case .spaceLens:
             CareCopy(title: "Space Map",
-                     subtitle: "See what fills your home folder, as a map you can explore.",
+                     subtitle: "See what fills your home folder or any disk, as a map you can explore.",
                      points: [Point(symbol: "square.grid.3x3.fill", label: "A map of your folders", detail: "The 50 biggest items, sized by the space they take."),
                               Point(symbol: "paintpalette", label: "Colored by type", detail: "Documents, photos, video, apps, archives and more."),
                               Point(symbol: "cursorarrow.click.2", label: "Click to go deeper", detail: "Open any folder, then go back with Up or Home.")],
@@ -165,6 +165,14 @@ struct CareCopy {
                               Point(symbol: "clock", label: "Untouched for six months", detail: "Old files are listed separately."),
                               Point(symbol: "hand.raised", label: "You choose", detail: "Nothing is preselected, and removals go to the Trash.")],
                      action: "Scan")
+        case .forgottenDownloads:
+            CareCopy(title: "Forgotten Downloads",
+                     subtitle: "Things you downloaded and never went back to, biggest first.",
+                     points: [Point(symbol: "arrow.down.circle", label: "Your Downloads folder", detail: "Every file and folder sitting in it, at any size."),
+                              Point(symbol: "calendar", label: "Untouched for 30 days", detail: "Not opened in a month, or never opened since it arrived."),
+                              Point(symbol: "hand.raised", label: "You choose", detail: "Nothing is preselected, and removals go to the Trash.")],
+                     action: "Scan",
+                     note: "Unfinished downloads are left to System Junk.")
         case .duplicates:
             CareCopy(title: "Duplicates",
                      subtitle: "Identical files in your home folder, matched by content rather than name.",
@@ -179,7 +187,8 @@ struct CareCopy {
                      points: [Point(symbol: "trash", label: "Move to Trash", detail: "The gentle default."),
                               Point(symbol: "xmark.bin", label: "Permanent delete", detail: "Skips the Trash entirely."),
                               Point(symbol: "eraser", label: "Secure erase", detail: "Overwrites with zeros first. Best effort on SSDs.")],
-                     action: "Select Files")
+                     action: "Select Files",
+                     note: "You can also drop files onto this window.")
         case .settings:
             CareCopy(title: "Settings", subtitle: "", points: [], action: "")
         }

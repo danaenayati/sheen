@@ -26,6 +26,7 @@ struct SettingsPageView: View {
     @AppStorage(AppLanguage.defaultsKey, store: SharedAppState.defaults) private var appLanguageRaw = AppLanguage.system.rawValue
     @AppStorage(HealthAlertSettings.memoryPressureAlertKey, store: SharedAppState.defaults) private var memoryPressureAlert = true
     @AppStorage(HealthAlertSettings.swapAlertThresholdKey, store: SharedAppState.defaults) private var swapAlertThresholdGB = 0
+    @AppStorage(HealthAlertSettings.diskAlertThresholdKey, store: SharedAppState.defaults) private var diskAlertThresholdGB = 5
     @State private var launcher = MenuBarLauncher.shared
     @State private var loginLauncher = LaunchAtLoginManager.shared
     @State private var updateState: UpdateUIState = .idle
@@ -275,6 +276,20 @@ struct SettingsPageView: View {
                 }
             }
             .toggleStyle(.switch)
+            Picker(selection: $diskAlertThresholdGB) {
+                ForEach(HealthAlertSettings.diskThresholdChoices, id: \.self) { gigabytes in
+                    Text(gigabytes == 0 ? HealthAlertStrings.swapOff : FileSizeFormatter.format(HealthAlertSettings.bytes(forGB: gigabytes)))
+                        .tag(gigabytes)
+                }
+            } label: {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(L10n.tr("磁盘空间不足时提醒", "Warn when free space drops below", "Предупреждать, если свободно меньше"))
+                    Text(L10n.tr("启动磁盘可用空间低于此值时，菜单栏小组件会发出通知。", "The menu bar widget sends a notification when your startup disk has less free space than this.", "Виджет в строке меню пришлёт уведомление, когда на загрузочном диске останется меньше места."))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .pickerStyle(.menu)
             Picker(selection: $swapAlertThresholdGB) {
                 ForEach(HealthAlertSettings.swapThresholdChoices, id: \.self) { gigabytes in
                     Text(gigabytes == 0 ? HealthAlertStrings.swapOff : FileSizeFormatter.format(HealthAlertSettings.bytes(forGB: gigabytes)))

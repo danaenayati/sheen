@@ -41,6 +41,8 @@ public enum SidebarItem: String, CaseIterable, Identifiable {
     // Cleanup (declared last so the ⌘1-⌘9 shortcuts, which follow
     // declaration order, keep pointing at the same modules)
     case cleanHistory = "清理历史"
+    // Files (declared last for the same reason)
+    case forgottenDownloads = "被遗忘的下载"
 
     // Footer (pinned below the list, not rendered in any section)
     case settings = "设置"
@@ -72,6 +74,7 @@ public enum SidebarItem: String, CaseIterable, Identifiable {
         case .diskHogs: "disk-hogs"
         case .projectJunk: "project-junk"
         case .cleanHistory: "clean-history"
+        case .forgottenDownloads: "forgotten-downloads"
         case .unusedApps: "unused-apps"
         case .settings: "settings"
         }
@@ -105,6 +108,7 @@ public enum SidebarItem: String, CaseIterable, Identifiable {
         case .diskHogs: "externaldrive.badge.xmark"
         case .projectJunk: "shippingbox"
         case .cleanHistory: "arrow.uturn.backward.circle"
+        case .forgottenDownloads: "arrow.down.circle"
         case .unusedApps: "app.badge.checkmark"
         case .settings: "gearshape"
         }
@@ -117,7 +121,7 @@ public enum SidebarItem: String, CaseIterable, Identifiable {
         case .malwareRemoval, .privacy, .browserExtensions, .wifiNetworks, .appPermissions: .protection
         case .optimization, .maintenance: .performance
         case .uninstaller, .unusedApps, .extensions, .updater: .applications
-        case .spaceLens, .largeOldFiles, .duplicates, .shredder: .files
+        case .spaceLens, .largeOldFiles, .duplicates, .shredder, .forgottenDownloads: .files
         case .settings: .settings
         }
     }
@@ -129,7 +133,7 @@ public enum SidebarItem: String, CaseIterable, Identifiable {
         case .malwareRemoval, .privacy, .browserExtensions, .wifiNetworks, .appPermissions: .protection
         case .optimization, .maintenance: .performance
         case .uninstaller, .unusedApps, .extensions, .updater: .applications
-        case .spaceLens, .largeOldFiles, .duplicates, .shredder: .files
+        case .spaceLens, .largeOldFiles, .duplicates, .shredder, .forgottenDownloads: .files
         case .settings: .main
         }
     }

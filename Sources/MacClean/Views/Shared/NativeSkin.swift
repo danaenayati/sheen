@@ -135,6 +135,7 @@ extension SidebarItem {
         case .updater: "arrow.triangle.2.circlepath"
         case .spaceLens: "chart.pie.fill"
         case .largeOldFiles: "doc.fill"
+        case .forgottenDownloads: "arrow.down.circle.fill"
         case .duplicates: "square.on.square.fill"
         case .shredder: "scissors"
         case .settings: "gearshape.fill"

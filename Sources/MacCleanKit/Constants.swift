@@ -218,11 +218,6 @@ public enum MCConstants {
     /// Never fetched by the app, so it is not part of the network surface.
     public static let supportURL = URL(string: "https://github.com/danaenayati/sheen")!
     public static let latestReleaseAPI = URL(string: "https://api.github.com/repos/danaenayati/sheen/releases/latest")!
-    /// Homebrew's public API for the official cask. Its `version` reflects what
-    /// `brew upgrade --cask sheen` can actually install right now (autobump
-    /// lags GitHub releases by a few days), so Homebrew installs check this
-    /// instead of the GitHub release to keep the update prompt in sync.
-    public static let homebrewCaskAPI = URL(string: "https://formulae.brew.sh/api/cask/sheen.json")!
 
     // MARK: - App version
     //
@@ -232,5 +227,5 @@ public enum MCConstants {
     // plugin was tried (commit history) but doesn't work under multi-arch
     // `swift build --arch arm64 --arch x86_64` because xcbuild doesn't
     // execute plugins.
-    public static let appVersion = "1.1.0"
+    public static let appVersion = "1.2.0"
 }
