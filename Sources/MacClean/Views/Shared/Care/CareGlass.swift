@@ -56,7 +56,7 @@ struct CareLight {
         CGSize(width: pointer.x * depth * 11, height: pointer.y * depth * 8)
     }
 
-    var tiltAngle: Angle { .degrees(8 * min(hypot(pointer.x, pointer.y), 1)) }
+    var tiltAngle: Angle { .degrees(8 * Double(min(hypot(pointer.x, pointer.y), 1))) }
     var tiltAxis: (x: CGFloat, y: CGFloat, z: CGFloat) { (x: -pointer.y, y: pointer.x, z: 0) }
 }
 
