@@ -1,0 +1,1370 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-06T19:24:45+00:00",
+  "title": "Design System: Sheen",
+  "extensions": {
+    "colorMeta": {
+      "smart-care-deep": {
+        "role": "primary",
+        "displayName": "Midnight Indigo Deep",
+        "canonical": "#0B0A2E",
+        "section": "Smart Scan",
+        "use": "Dark ground base, glass edge, floor shadow (dark)",
+        "tonalRamp": [
+          "oklch(15% 0.049 277.6)",
+          "oklch(26% 0.063 277.6)",
+          "oklch(37% 0.070 277.6)",
+          "oklch(48% 0.070 277.6)",
+          "oklch(59% 0.070 277.6)",
+          "oklch(70% 0.070 277.6)",
+          "oklch(82% 0.066 277.6)",
+          "oklch(95% 0.049 277.6)"
+        ]
+      },
+      "smart-care-mid": {
+        "role": "primary",
+        "displayName": "Midnight Indigo Mid",
+        "canonical": "#2B2384",
+        "section": "Smart Scan",
+        "use": "Dark ground second hue; light-mode pill body; dark-mode pill label",
+        "tonalRamp": [
+          "oklch(15% 0.072 277.9)",
+          "oklch(26% 0.103 277.9)",
+          "oklch(37% 0.134 277.9)",
+          "oklch(48% 0.154 277.9)",
+          "oklch(59% 0.154 277.9)",
+          "oklch(70% 0.142 277.9)",
+          "oklch(82% 0.109 277.9)",
+          "oklch(95% 0.072 277.9)"
+        ]
+      },
+      "smart-care-glow": {
+        "role": "primary",
+        "displayName": "Midnight Indigo Glow",
+        "canonical": "#37C8FF",
+        "section": "Smart Scan",
+        "use": "Light pool behind the hero; ring glow",
+        "tonalRamp": [
+          "oklch(15% 0.068 229.0)",
+          "oklch(26% 0.096 229.0)",
+          "oklch(37% 0.124 229.0)",
+          "oklch(48% 0.140 229.0)",
+          "oklch(59% 0.140 229.0)",
+          "oklch(70% 0.132 229.0)",
+          "oklch(82% 0.101 229.0)",
+          "oklch(95% 0.068 229.0)"
+        ]
+      },
+      "smart-care-pale-top": {
+        "role": "primary",
+        "displayName": "Midnight Indigo Pale Top",
+        "canonical": "#E9EBFF",
+        "section": "Smart Scan",
+        "use": "Light ground start; light panel/sidebar tint",
+        "tonalRamp": [
+          "oklch(15% 0.027 281.3)",
+          "oklch(26% 0.027 281.3)",
+          "oklch(37% 0.027 281.3)",
+          "oklch(48% 0.027 281.3)",
+          "oklch(59% 0.027 281.3)",
+          "oklch(70% 0.027 281.3)",
+          "oklch(82% 0.027 281.3)",
+          "oklch(95% 0.027 281.3)"
+        ]
+      },
+      "smart-care-pale-bottom": {
+        "role": "primary",
+        "displayName": "Midnight Indigo Pale Bottom",
+        "canonical": "#CFEFFF",
+        "section": "Smart Scan",
+        "use": "Light ground end",
+        "tonalRamp": [
+          "oklch(15% 0.040 229.4)",
+          "oklch(26% 0.040 229.4)",
+          "oklch(37% 0.040 229.4)",
+          "oklch(48% 0.040 229.4)",
+          "oklch(59% 0.040 229.4)",
+          "oklch(70% 0.040 229.4)",
+          "oklch(82% 0.040 229.4)",
+          "oklch(95% 0.040 229.4)"
+        ]
+      },
+      "smart-care-ink": {
+        "role": "primary",
+        "displayName": "Midnight Indigo Ink",
+        "canonical": "#1A1660",
+        "section": "Smart Scan",
+        "use": "Text on light grounds",
+        "tonalRamp": [
+          "oklch(15% 0.064 276.1)",
+          "oklch(26% 0.089 276.1)",
+          "oklch(37% 0.114 276.1)",
+          "oklch(48% 0.125 276.1)",
+          "oklch(59% 0.125 276.1)",
+          "oklch(70% 0.121 276.1)",
+          "oklch(82% 0.094 276.1)",
+          "oklch(95% 0.064 276.1)"
+        ]
+      },
+      "smart-care-tile-top": {
+        "role": "primary",
+        "displayName": "Midnight Indigo Tile Top",
+        "canonical": "#7E6BFF",
+        "section": "Smart Scan",
+        "use": "Tile/glass gradient start",
+        "tonalRamp": [
+          "oklch(15% 0.088 284.3)",
+          "oklch(26% 0.130 284.3)",
+          "oklch(37% 0.172 284.3)",
+          "oklch(48% 0.211 284.3)",
+          "oklch(59% 0.211 284.3)",
+          "oklch(70% 0.184 284.3)",
+          "oklch(82% 0.138 284.3)",
+          "oklch(95% 0.088 284.3)"
+        ]
+      },
+      "smart-care-tile-bottom": {
+        "role": "primary",
+        "displayName": "Midnight Indigo Tile Bottom",
+        "canonical": "#22B5F5",
+        "section": "Smart Scan",
+        "use": "Tile/glass gradient end; control tint",
+        "tonalRamp": [
+          "oklch(15% 0.070 234.3)",
+          "oklch(26% 0.099 234.3)",
+          "oklch(37% 0.128 234.3)",
+          "oklch(48% 0.146 234.3)",
+          "oklch(59% 0.146 234.3)",
+          "oklch(70% 0.136 234.3)",
+          "oklch(82% 0.104 234.3)",
+          "oklch(95% 0.070 234.3)"
+        ]
+      },
+      "smart-care-spark": {
+        "role": "primary",
+        "displayName": "Midnight Indigo Spark",
+        "canonical": "#5BE3FF",
+        "section": "Smart Scan",
+        "use": "Second-hue accent pieces in hero objects; ring tail",
+        "tonalRamp": [
+          "oklch(15% 0.063 213.8)",
+          "oklch(26% 0.088 213.8)",
+          "oklch(37% 0.112 213.8)",
+          "oklch(48% 0.123 213.8)",
+          "oklch(59% 0.123 213.8)",
+          "oklch(70% 0.119 213.8)",
+          "oklch(82% 0.092 213.8)",
+          "oklch(95% 0.063 213.8)"
+        ]
+      },
+      "cleanup-deep": {
+        "role": "secondary",
+        "displayName": "Emerald Deep",
+        "canonical": "#04241D",
+        "section": "Cleanup",
+        "use": "Dark ground base, glass edge, floor shadow (dark)",
+        "tonalRamp": [
+          "oklch(15% 0.040 175.4)",
+          "oklch(26% 0.040 175.4)",
+          "oklch(37% 0.040 175.4)",
+          "oklch(48% 0.040 175.4)",
+          "oklch(59% 0.040 175.4)",
+          "oklch(70% 0.040 175.4)",
+          "oklch(82% 0.040 175.4)",
+          "oklch(95% 0.040 175.4)"
+        ]
+      },
+      "cleanup-mid": {
+        "role": "secondary",
+        "displayName": "Emerald Mid",
+        "canonical": "#0C6A55",
+        "section": "Cleanup",
+        "use": "Dark ground second hue; light-mode pill body; dark-mode pill label",
+        "tonalRamp": [
+          "oklch(15% 0.054 172.2)",
+          "oklch(26% 0.071 172.2)",
+          "oklch(37% 0.087 172.2)",
+          "oklch(48% 0.087 172.2)",
+          "oklch(59% 0.087 172.2)",
+          "oklch(70% 0.087 172.2)",
+          "oklch(82% 0.074 172.2)",
+          "oklch(95% 0.054 172.2)"
+        ]
+      },
+      "cleanup-glow": {
+        "role": "secondary",
+        "displayName": "Emerald Glow",
+        "canonical": "#3BF0A8",
+        "section": "Cleanup",
+        "use": "Light pool behind the hero; ring glow",
+        "tonalRamp": [
+          "oklch(15% 0.078 161.1)",
+          "oklch(26% 0.113 161.1)",
+          "oklch(37% 0.148 161.1)",
+          "oklch(48% 0.175 161.1)",
+          "oklch(59% 0.175 161.1)",
+          "oklch(70% 0.157 161.1)",
+          "oklch(82% 0.119 161.1)",
+          "oklch(95% 0.078 161.1)"
+        ]
+      },
+      "cleanup-pale-top": {
+        "role": "secondary",
+        "displayName": "Emerald Pale Top",
+        "canonical": "#E5FBF2",
+        "section": "Cleanup",
+        "use": "Light ground start; light panel/sidebar tint",
+        "tonalRamp": [
+          "oklch(15% 0.026 169.3)",
+          "oklch(26% 0.026 169.3)",
+          "oklch(37% 0.026 169.3)",
+          "oklch(48% 0.026 169.3)",
+          "oklch(59% 0.026 169.3)",
+          "oklch(70% 0.026 169.3)",
+          "oklch(82% 0.026 169.3)",
+          "oklch(95% 0.026 169.3)"
+        ]
+      },
+      "cleanup-pale-bottom": {
+        "role": "secondary",
+        "displayName": "Emerald Pale Bottom",
+        "canonical": "#C2F1DF",
+        "section": "Cleanup",
+        "use": "Light ground end",
+        "tonalRamp": [
+          "oklch(15% 0.045 169.8)",
+          "oklch(26% 0.054 169.8)",
+          "oklch(37% 0.054 169.8)",
+          "oklch(48% 0.054 169.8)",
+          "oklch(59% 0.054 169.8)",
+          "oklch(70% 0.054 169.8)",
+          "oklch(82% 0.054 169.8)",
+          "oklch(95% 0.045 169.8)"
+        ]
+      },
+      "cleanup-ink": {
+        "role": "secondary",
+        "displayName": "Emerald Ink",
+        "canonical": "#07402F",
+        "section": "Cleanup",
+        "use": "Text on light grounds",
+        "tonalRamp": [
+          "oklch(15% 0.047 167.3)",
+          "oklch(26% 0.060 167.3)",
+          "oklch(37% 0.064 167.3)",
+          "oklch(48% 0.064 167.3)",
+          "oklch(59% 0.064 167.3)",
+          "oklch(70% 0.064 167.3)",
+          "oklch(82% 0.062 167.3)",
+          "oklch(95% 0.047 167.3)"
+        ]
+      },
+      "cleanup-tile-top": {
+        "role": "secondary",
+        "displayName": "Emerald Tile Top",
+        "canonical": "#45E8B0",
+        "section": "Cleanup",
+        "use": "Tile/glass gradient start",
+        "tonalRamp": [
+          "oklch(15% 0.072 165.4)",
+          "oklch(26% 0.104 165.4)",
+          "oklch(37% 0.135 165.4)",
+          "oklch(48% 0.156 165.4)",
+          "oklch(59% 0.156 165.4)",
+          "oklch(70% 0.143 165.4)",
+          "oklch(82% 0.109 165.4)",
+          "oklch(95% 0.072 165.4)"
+        ]
+      },
+      "cleanup-tile-bottom": {
+        "role": "secondary",
+        "displayName": "Emerald Tile Bottom",
+        "canonical": "#0A9A7B",
+        "section": "Cleanup",
+        "use": "Tile/glass gradient end; control tint",
+        "tonalRamp": [
+          "oklch(15% 0.062 171.6)",
+          "oklch(26% 0.086 171.6)",
+          "oklch(37% 0.109 171.6)",
+          "oklch(48% 0.117 171.6)",
+          "oklch(59% 0.117 171.6)",
+          "oklch(70% 0.115 171.6)",
+          "oklch(82% 0.090 171.6)",
+          "oklch(95% 0.062 171.6)"
+        ]
+      },
+      "cleanup-spark": {
+        "role": "secondary",
+        "displayName": "Emerald Spark",
+        "canonical": "#C8F25A",
+        "section": "Cleanup",
+        "use": "Second-hue accent pieces in hero objects; ring tail",
+        "tonalRamp": [
+          "oklch(15% 0.080 123.2)",
+          "oklch(26% 0.116 123.2)",
+          "oklch(37% 0.152 123.2)",
+          "oklch(48% 0.182 123.2)",
+          "oklch(59% 0.182 123.2)",
+          "oklch(70% 0.162 123.2)",
+          "oklch(82% 0.123 123.2)",
+          "oklch(95% 0.080 123.2)"
+        ]
+      },
+      "protection-deep": {
+        "role": "secondary",
+        "displayName": "Rose Plum Deep",
+        "canonical": "#2A0619",
+        "section": "Protection",
+        "use": "Dark ground base, glass edge, floor shadow (dark)",
+        "tonalRamp": [
+          "oklch(15% 0.048 351.7)",
+          "oklch(26% 0.061 351.7)",
+          "oklch(37% 0.065 351.7)",
+          "oklch(48% 0.065 351.7)",
+          "oklch(59% 0.065 351.7)",
+          "oklch(70% 0.065 351.7)",
+          "oklch(82% 0.063 351.7)",
+          "oklch(95% 0.048 351.7)"
+        ]
+      },
+      "protection-mid": {
+        "role": "secondary",
+        "displayName": "Rose Plum Mid",
+        "canonical": "#8C1846",
+        "section": "Protection",
+        "use": "Dark ground second hue; light-mode pill body; dark-mode pill label",
+        "tonalRamp": [
+          "oklch(15% 0.072 3.3)",
+          "oklch(26% 0.102 3.3)",
+          "oklch(37% 0.133 3.3)",
+          "oklch(48% 0.153 3.3)",
+          "oklch(59% 0.153 3.3)",
+          "oklch(70% 0.141 3.3)",
+          "oklch(82% 0.108 3.3)",
+          "oklch(95% 0.072 3.3)"
+        ]
+      },
+      "protection-glow": {
+        "role": "secondary",
+        "displayName": "Rose Plum Glow",
+        "canonical": "#FF5C8A",
+        "section": "Protection",
+        "use": "Light pool behind the hero; ring glow",
+        "tonalRamp": [
+          "oklch(15% 0.085 6.6)",
+          "oklch(26% 0.125 6.6)",
+          "oklch(37% 0.165 6.6)",
+          "oklch(48% 0.200 6.6)",
+          "oklch(59% 0.200 6.6)",
+          "oklch(70% 0.175 6.6)",
+          "oklch(82% 0.132 6.6)",
+          "oklch(95% 0.085 6.6)"
+        ]
+      },
+      "protection-pale-top": {
+        "role": "secondary",
+        "displayName": "Rose Plum Pale Top",
+        "canonical": "#FFEAF0",
+        "section": "Protection",
+        "use": "Light ground start; light panel/sidebar tint",
+        "tonalRamp": [
+          "oklch(15% 0.024 358.3)",
+          "oklch(26% 0.024 358.3)",
+          "oklch(37% 0.024 358.3)",
+          "oklch(48% 0.024 358.3)",
+          "oklch(59% 0.024 358.3)",
+          "oklch(70% 0.024 358.3)",
+          "oklch(82% 0.024 358.3)",
+          "oklch(95% 0.024 358.3)"
+        ]
+      },
+      "protection-pale-bottom": {
+        "role": "secondary",
+        "displayName": "Rose Plum Pale Bottom",
+        "canonical": "#FFD3DF",
+        "section": "Protection",
+        "use": "Light ground end",
+        "tonalRamp": [
+          "oklch(15% 0.044 360.0)",
+          "oklch(26% 0.052 360.0)",
+          "oklch(37% 0.052 360.0)",
+          "oklch(48% 0.052 360.0)",
+          "oklch(59% 0.052 360.0)",
+          "oklch(70% 0.052 360.0)",
+          "oklch(82% 0.052 360.0)",
+          "oklch(95% 0.044 360.0)"
+        ]
+      },
+      "protection-ink": {
+        "role": "secondary",
+        "displayName": "Rose Plum Ink",
+        "canonical": "#5E0B2D",
+        "section": "Protection",
+        "use": "Text on light grounds",
+        "tonalRamp": [
+          "oklch(15% 0.062 2.9)",
+          "oklch(26% 0.085 2.9)",
+          "oklch(37% 0.108 2.9)",
+          "oklch(48% 0.117 2.9)",
+          "oklch(59% 0.117 2.9)",
+          "oklch(70% 0.115 2.9)",
+          "oklch(82% 0.089 2.9)",
+          "oklch(95% 0.062 2.9)"
+        ]
+      },
+      "protection-tile-top": {
+        "role": "secondary",
+        "displayName": "Rose Plum Tile Top",
+        "canonical": "#FF7B9C",
+        "section": "Protection",
+        "use": "Tile/glass gradient start",
+        "tonalRamp": [
+          "oklch(15% 0.074 6.1)",
+          "oklch(26% 0.107 6.1)",
+          "oklch(37% 0.140 6.1)",
+          "oklch(48% 0.163 6.1)",
+          "oklch(59% 0.163 6.1)",
+          "oklch(70% 0.149 6.1)",
+          "oklch(82% 0.113 6.1)",
+          "oklch(95% 0.074 6.1)"
+        ]
+      },
+      "protection-tile-bottom": {
+        "role": "secondary",
+        "displayName": "Rose Plum Tile Bottom",
+        "canonical": "#C71A5A",
+        "section": "Protection",
+        "use": "Tile/glass gradient end; control tint",
+        "tonalRamp": [
+          "oklch(15% 0.086 7.1)",
+          "oklch(26% 0.126 7.1)",
+          "oklch(37% 0.167 7.1)",
+          "oklch(48% 0.204 7.1)",
+          "oklch(59% 0.204 7.1)",
+          "oklch(70% 0.178 7.1)",
+          "oklch(82% 0.134 7.1)",
+          "oklch(95% 0.086 7.1)"
+        ]
+      },
+      "protection-spark": {
+        "role": "secondary",
+        "displayName": "Rose Plum Spark",
+        "canonical": "#FFB36B",
+        "section": "Protection",
+        "use": "Second-hue accent pieces in hero objects; ring tail",
+        "tonalRamp": [
+          "oklch(15% 0.064 63.1)",
+          "oklch(26% 0.089 63.1)",
+          "oklch(37% 0.114 63.1)",
+          "oklch(48% 0.125 63.1)",
+          "oklch(59% 0.125 63.1)",
+          "oklch(70% 0.121 63.1)",
+          "oklch(82% 0.094 63.1)",
+          "oklch(95% 0.064 63.1)"
+        ]
+      },
+      "performance-deep": {
+        "role": "secondary",
+        "displayName": "Ember Deep",
+        "canonical": "#2B1003",
+        "section": "Performance",
+        "use": "Dark ground base, glass edge, floor shadow (dark)",
+        "tonalRamp": [
+          "oklch(15% 0.044 47.0)",
+          "oklch(26% 0.051 47.0)",
+          "oklch(37% 0.051 47.0)",
+          "oklch(48% 0.051 47.0)",
+          "oklch(59% 0.051 47.0)",
+          "oklch(70% 0.051 47.0)",
+          "oklch(82% 0.051 47.0)",
+          "oklch(95% 0.044 47.0)"
+        ]
+      },
+      "performance-mid": {
+        "role": "secondary",
+        "displayName": "Ember Mid",
+        "canonical": "#983A0B",
+        "section": "Performance",
+        "use": "Dark ground second hue; light-mode pill body; dark-mode pill label",
+        "tonalRamp": [
+          "oklch(15% 0.067 41.9)",
+          "oklch(26% 0.095 41.9)",
+          "oklch(37% 0.122 41.9)",
+          "oklch(48% 0.137 41.9)",
+          "oklch(59% 0.137 41.9)",
+          "oklch(70% 0.129 41.9)",
+          "oklch(82% 0.100 41.9)",
+          "oklch(95% 0.067 41.9)"
+        ]
+      },
+      "performance-glow": {
+        "role": "secondary",
+        "displayName": "Ember Glow",
+        "canonical": "#FFB23F",
+        "section": "Performance",
+        "use": "Light pool behind the hero; ring glow",
+        "tonalRamp": [
+          "oklch(15% 0.072 72.8)",
+          "oklch(26% 0.102 72.8)",
+          "oklch(37% 0.133 72.8)",
+          "oklch(48% 0.153 72.8)",
+          "oklch(59% 0.153 72.8)",
+          "oklch(70% 0.141 72.8)",
+          "oklch(82% 0.108 72.8)",
+          "oklch(95% 0.072 72.8)"
+        ]
+      },
+      "performance-pale-top": {
+        "role": "secondary",
+        "displayName": "Ember Pale Top",
+        "canonical": "#FFF2E1",
+        "section": "Performance",
+        "use": "Light ground start; light panel/sidebar tint",
+        "tonalRamp": [
+          "oklch(15% 0.026 74.8)",
+          "oklch(26% 0.026 74.8)",
+          "oklch(37% 0.026 74.8)",
+          "oklch(48% 0.026 74.8)",
+          "oklch(59% 0.026 74.8)",
+          "oklch(70% 0.026 74.8)",
+          "oklch(82% 0.026 74.8)",
+          "oklch(95% 0.026 74.8)"
+        ]
+      },
+      "performance-pale-bottom": {
+        "role": "secondary",
+        "displayName": "Ember Pale Bottom",
+        "canonical": "#FFDDB8",
+        "section": "Performance",
+        "use": "Light ground end",
+        "tonalRamp": [
+          "oklch(15% 0.047 69.3)",
+          "oklch(26% 0.059 69.3)",
+          "oklch(37% 0.061 69.3)",
+          "oklch(48% 0.061 69.3)",
+          "oklch(59% 0.061 69.3)",
+          "oklch(70% 0.061 69.3)",
+          "oklch(82% 0.061 69.3)",
+          "oklch(95% 0.047 69.3)"
+        ]
+      },
+      "performance-ink": {
+        "role": "secondary",
+        "displayName": "Ember Ink",
+        "canonical": "#5C2306",
+        "section": "Performance",
+        "use": "Text on light grounds",
+        "tonalRamp": [
+          "oklch(15% 0.055 43.4)",
+          "oklch(26% 0.073 43.4)",
+          "oklch(37% 0.092 43.4)",
+          "oklch(48% 0.092 43.4)",
+          "oklch(59% 0.092 43.4)",
+          "oklch(70% 0.092 43.4)",
+          "oklch(82% 0.077 43.4)",
+          "oklch(95% 0.055 43.4)"
+        ]
+      },
+      "performance-tile-top": {
+        "role": "secondary",
+        "displayName": "Ember Tile Top",
+        "canonical": "#FFC54D",
+        "section": "Performance",
+        "use": "Tile/glass gradient start",
+        "tonalRamp": [
+          "oklch(15% 0.070 82.3)",
+          "oklch(26% 0.100 82.3)",
+          "oklch(37% 0.130 82.3)",
+          "oklch(48% 0.148 82.3)",
+          "oklch(59% 0.148 82.3)",
+          "oklch(70% 0.138 82.3)",
+          "oklch(82% 0.105 82.3)",
+          "oklch(95% 0.070 82.3)"
+        ]
+      },
+      "performance-tile-bottom": {
+        "role": "secondary",
+        "displayName": "Ember Tile Bottom",
+        "canonical": "#F0561A",
+        "section": "Performance",
+        "use": "Tile/glass gradient end; control tint",
+        "tonalRamp": [
+          "oklch(15% 0.085 38.5)",
+          "oklch(26% 0.125 38.5)",
+          "oklch(37% 0.165 38.5)",
+          "oklch(48% 0.200 38.5)",
+          "oklch(59% 0.200 38.5)",
+          "oklch(70% 0.176 38.5)",
+          "oklch(82% 0.132 38.5)",
+          "oklch(95% 0.085 38.5)"
+        ]
+      },
+      "performance-spark": {
+        "role": "secondary",
+        "displayName": "Ember Spark",
+        "canonical": "#FF7A59",
+        "section": "Performance",
+        "use": "Second-hue accent pieces in hero objects; ring tail",
+        "tonalRamp": [
+          "oklch(15% 0.076 35.1)",
+          "oklch(26% 0.110 35.1)",
+          "oklch(37% 0.144 35.1)",
+          "oklch(48% 0.170 35.1)",
+          "oklch(59% 0.170 35.1)",
+          "oklch(70% 0.153 35.1)",
+          "oklch(82% 0.116 35.1)",
+          "oklch(95% 0.076 35.1)"
+        ]
+      },
+      "applications-deep": {
+        "role": "secondary",
+        "displayName": "Cobalt Deep",
+        "canonical": "#05163A",
+        "section": "Applications",
+        "use": "Dark ground base, glass edge, floor shadow (dark)",
+        "tonalRamp": [
+          "oklch(15% 0.050 262.2)",
+          "oklch(26% 0.065 262.2)",
+          "oklch(37% 0.074 262.2)",
+          "oklch(48% 0.074 262.2)",
+          "oklch(59% 0.074 262.2)",
+          "oklch(70% 0.074 262.2)",
+          "oklch(82% 0.068 262.2)",
+          "oklch(95% 0.050 262.2)"
+        ]
+      },
+      "applications-mid": {
+        "role": "secondary",
+        "displayName": "Cobalt Mid",
+        "canonical": "#1546B6",
+        "section": "Applications",
+        "use": "Dark ground second hue; light-mode pill body; dark-mode pill label",
+        "tonalRamp": [
+          "oklch(15% 0.080 263.1)",
+          "oklch(26% 0.117 263.1)",
+          "oklch(37% 0.154 263.1)",
+          "oklch(48% 0.185 263.1)",
+          "oklch(59% 0.185 263.1)",
+          "oklch(70% 0.164 263.1)",
+          "oklch(82% 0.124 263.1)",
+          "oklch(95% 0.080 263.1)"
+        ]
+      },
+      "applications-glow": {
+        "role": "secondary",
+        "displayName": "Cobalt Glow",
+        "canonical": "#52A8FF",
+        "section": "Applications",
+        "use": "Light pool behind the hero; ring glow",
+        "tonalRamp": [
+          "oklch(15% 0.072 251.0)",
+          "oklch(26% 0.102 251.0)",
+          "oklch(37% 0.132 251.0)",
+          "oklch(48% 0.152 251.0)",
+          "oklch(59% 0.152 251.0)",
+          "oklch(70% 0.141 251.0)",
+          "oklch(82% 0.107 251.0)",
+          "oklch(95% 0.072 251.0)"
+        ]
+      },
+      "applications-pale-top": {
+        "role": "secondary",
+        "displayName": "Cobalt Pale Top",
+        "canonical": "#E6F0FF",
+        "section": "Applications",
+        "use": "Light ground start; light panel/sidebar tint",
+        "tonalRamp": [
+          "oklch(15% 0.023 258.4)",
+          "oklch(26% 0.023 258.4)",
+          "oklch(37% 0.023 258.4)",
+          "oklch(48% 0.023 258.4)",
+          "oklch(59% 0.023 258.4)",
+          "oklch(70% 0.023 258.4)",
+          "oklch(82% 0.023 258.4)",
+          "oklch(95% 0.023 258.4)"
+        ]
+      },
+      "applications-pale-bottom": {
+        "role": "secondary",
+        "displayName": "Cobalt Pale Bottom",
+        "canonical": "#C9DEFF",
+        "section": "Applications",
+        "use": "Light ground end",
+        "tonalRamp": [
+          "oklch(15% 0.044 259.4)",
+          "oklch(26% 0.051 259.4)",
+          "oklch(37% 0.051 259.4)",
+          "oklch(48% 0.051 259.4)",
+          "oklch(59% 0.051 259.4)",
+          "oklch(70% 0.051 259.4)",
+          "oklch(82% 0.051 259.4)",
+          "oklch(95% 0.044 259.4)"
+        ]
+      },
+      "applications-ink": {
+        "role": "secondary",
+        "displayName": "Cobalt Ink",
+        "canonical": "#0B2B73",
+        "section": "Applications",
+        "use": "Text on light grounds",
+        "tonalRamp": [
+          "oklch(15% 0.065 263.0)",
+          "oklch(26% 0.091 263.0)",
+          "oklch(37% 0.117 263.0)",
+          "oklch(48% 0.130 263.0)",
+          "oklch(59% 0.130 263.0)",
+          "oklch(70% 0.124 263.0)",
+          "oklch(82% 0.096 263.0)",
+          "oklch(95% 0.065 263.0)"
+        ]
+      },
+      "applications-tile-top": {
+        "role": "secondary",
+        "displayName": "Cobalt Tile Top",
+        "canonical": "#62BCFF",
+        "section": "Applications",
+        "use": "Tile/glass gradient start",
+        "tonalRamp": [
+          "oklch(15% 0.065 243.1)",
+          "oklch(26% 0.091 243.1)",
+          "oklch(37% 0.117 243.1)",
+          "oklch(48% 0.130 243.1)",
+          "oklch(59% 0.130 243.1)",
+          "oklch(70% 0.124 243.1)",
+          "oklch(82% 0.096 243.1)",
+          "oklch(95% 0.065 243.1)"
+        ]
+      },
+      "applications-tile-bottom": {
+        "role": "secondary",
+        "displayName": "Cobalt Tile Bottom",
+        "canonical": "#2F57F5",
+        "section": "Applications",
+        "use": "Tile/glass gradient end; control tint",
+        "tonalRamp": [
+          "oklch(15% 0.095 266.5)",
+          "oklch(26% 0.143 266.5)",
+          "oklch(37% 0.191 266.5)",
+          "oklch(48% 0.239 266.5)",
+          "oklch(59% 0.239 266.5)",
+          "oklch(70% 0.204 266.5)",
+          "oklch(82% 0.152 266.5)",
+          "oklch(95% 0.095 266.5)"
+        ]
+      },
+      "applications-spark": {
+        "role": "secondary",
+        "displayName": "Cobalt Spark",
+        "canonical": "#7CF0FF",
+        "section": "Applications",
+        "use": "Second-hue accent pieces in hero objects; ring tail",
+        "tonalRamp": [
+          "oklch(15% 0.059 206.5)",
+          "oklch(26% 0.081 206.5)",
+          "oklch(37% 0.102 206.5)",
+          "oklch(48% 0.107 206.5)",
+          "oklch(59% 0.107 206.5)",
+          "oklch(70% 0.107 206.5)",
+          "oklch(82% 0.085 206.5)",
+          "oklch(95% 0.059 206.5)"
+        ]
+      },
+      "files-deep": {
+        "role": "secondary",
+        "displayName": "Ultraviolet Deep",
+        "canonical": "#1A0939",
+        "section": "Files",
+        "use": "Dark ground base, glass edge, floor shadow (dark)",
+        "tonalRamp": [
+          "oklch(15% 0.054 293.3)",
+          "oklch(26% 0.071 293.3)",
+          "oklch(37% 0.086 293.3)",
+          "oklch(48% 0.086 293.3)",
+          "oklch(59% 0.086 293.3)",
+          "oklch(70% 0.086 293.3)",
+          "oklch(82% 0.074 293.3)",
+          "oklch(95% 0.054 293.3)"
+        ]
+      },
+      "files-mid": {
+        "role": "secondary",
+        "displayName": "Ultraviolet Mid",
+        "canonical": "#5A21B4",
+        "section": "Files",
+        "use": "Dark ground second hue; light-mode pill body; dark-mode pill label",
+        "tonalRamp": [
+          "oklch(15% 0.087 292.7)",
+          "oklch(26% 0.129 292.7)",
+          "oklch(37% 0.170 292.7)",
+          "oklch(48% 0.208 292.7)",
+          "oklch(59% 0.208 292.7)",
+          "oklch(70% 0.182 292.7)",
+          "oklch(82% 0.136 292.7)",
+          "oklch(95% 0.087 292.7)"
+        ]
+      },
+      "files-glow": {
+        "role": "secondary",
+        "displayName": "Ultraviolet Glow",
+        "canonical": "#C57EFF",
+        "section": "Files",
+        "use": "Light pool behind the hero; ring glow",
+        "tonalRamp": [
+          "oklch(15% 0.082 307.7)",
+          "oklch(26% 0.120 307.7)",
+          "oklch(37% 0.158 307.7)",
+          "oklch(48% 0.191 307.7)",
+          "oklch(59% 0.191 307.7)",
+          "oklch(70% 0.169 307.7)",
+          "oklch(82% 0.127 307.7)",
+          "oklch(95% 0.082 307.7)"
+        ]
+      },
+      "files-pale-top": {
+        "role": "secondary",
+        "displayName": "Ultraviolet Pale Top",
+        "canonical": "#F3EAFF",
+        "section": "Files",
+        "use": "Light ground start; light panel/sidebar tint",
+        "tonalRamp": [
+          "oklch(15% 0.030 305.1)",
+          "oklch(26% 0.030 305.1)",
+          "oklch(37% 0.030 305.1)",
+          "oklch(48% 0.030 305.1)",
+          "oklch(59% 0.030 305.1)",
+          "oklch(70% 0.030 305.1)",
+          "oklch(82% 0.030 305.1)",
+          "oklch(95% 0.030 305.1)"
+        ]
+      },
+      "files-pale-bottom": {
+        "role": "secondary",
+        "displayName": "Ultraviolet Pale Bottom",
+        "canonical": "#E0CCFF",
+        "section": "Files",
+        "use": "Light ground end",
+        "tonalRamp": [
+          "oklch(15% 0.050 302.8)",
+          "oklch(26% 0.064 302.8)",
+          "oklch(37% 0.072 302.8)",
+          "oklch(48% 0.072 302.8)",
+          "oklch(59% 0.072 302.8)",
+          "oklch(70% 0.072 302.8)",
+          "oklch(82% 0.067 302.8)",
+          "oklch(95% 0.050 302.8)"
+        ]
+      },
+      "files-ink": {
+        "role": "secondary",
+        "displayName": "Ultraviolet Ink",
+        "canonical": "#3A0F7A",
+        "section": "Files",
+        "use": "Text on light grounds",
+        "tonalRamp": [
+          "oklch(15% 0.074 292.7)",
+          "oklch(26% 0.106 292.7)",
+          "oklch(37% 0.138 292.7)",
+          "oklch(48% 0.160 292.7)",
+          "oklch(59% 0.160 292.7)",
+          "oklch(70% 0.146 292.7)",
+          "oklch(82% 0.112 292.7)",
+          "oklch(95% 0.074 292.7)"
+        ]
+      },
+      "files-tile-top": {
+        "role": "secondary",
+        "displayName": "Ultraviolet Tile Top",
+        "canonical": "#CB8EFF",
+        "section": "Files",
+        "use": "Tile/glass gradient start",
+        "tonalRamp": [
+          "oklch(15% 0.076 307.7)",
+          "oklch(26% 0.109 307.7)",
+          "oklch(37% 0.143 307.7)",
+          "oklch(48% 0.168 307.7)",
+          "oklch(59% 0.168 307.7)",
+          "oklch(70% 0.152 307.7)",
+          "oklch(82% 0.115 307.7)",
+          "oklch(95% 0.076 307.7)"
+        ]
+      },
+      "files-tile-bottom": {
+        "role": "secondary",
+        "displayName": "Ultraviolet Tile Bottom",
+        "canonical": "#7434E6",
+        "section": "Files",
+        "use": "Tile/glass gradient end; control tint",
+        "tonalRamp": [
+          "oklch(15% 0.097 291.9)",
+          "oklch(26% 0.146 291.9)",
+          "oklch(37% 0.195 291.9)",
+          "oklch(48% 0.244 291.9)",
+          "oklch(59% 0.245 291.9)",
+          "oklch(70% 0.208 291.9)",
+          "oklch(82% 0.155 291.9)",
+          "oklch(95% 0.097 291.9)"
+        ]
+      },
+      "files-spark": {
+        "role": "secondary",
+        "displayName": "Ultraviolet Spark",
+        "canonical": "#FF8AD8",
+        "section": "Files",
+        "use": "Second-hue accent pieces in hero objects; ring tail",
+        "tonalRamp": [
+          "oklch(15% 0.076 341.2)",
+          "oklch(26% 0.109 341.2)",
+          "oklch(37% 0.143 341.2)",
+          "oklch(48% 0.168 341.2)",
+          "oklch(59% 0.168 341.2)",
+          "oklch(70% 0.152 341.2)",
+          "oklch(82% 0.115 341.2)",
+          "oklch(95% 0.076 341.2)"
+        ]
+      },
+      "settings-deep": {
+        "role": "neutral",
+        "displayName": "Graphite Deep",
+        "canonical": "#111419",
+        "section": "Settings",
+        "use": "Dark ground base, glass edge, floor shadow (dark)",
+        "tonalRamp": [
+          "oklch(15% 0.011 260.7)",
+          "oklch(26% 0.011 260.7)",
+          "oklch(37% 0.011 260.7)",
+          "oklch(48% 0.011 260.7)",
+          "oklch(59% 0.011 260.7)",
+          "oklch(70% 0.011 260.7)",
+          "oklch(82% 0.011 260.7)",
+          "oklch(95% 0.011 260.7)"
+        ]
+      },
+      "settings-mid": {
+        "role": "neutral",
+        "displayName": "Graphite Mid",
+        "canonical": "#2C3340",
+        "section": "Settings",
+        "use": "Dark ground second hue; light-mode pill body; dark-mode pill label",
+        "tonalRamp": [
+          "oklch(15% 0.025 262.7)",
+          "oklch(26% 0.025 262.7)",
+          "oklch(37% 0.025 262.7)",
+          "oklch(48% 0.025 262.7)",
+          "oklch(59% 0.025 262.7)",
+          "oklch(70% 0.025 262.7)",
+          "oklch(82% 0.025 262.7)",
+          "oklch(95% 0.025 262.7)"
+        ]
+      },
+      "settings-glow": {
+        "role": "neutral",
+        "displayName": "Graphite Glow",
+        "canonical": "#8FA6C4",
+        "section": "Settings",
+        "use": "Light pool behind the hero; ring glow",
+        "tonalRamp": [
+          "oklch(15% 0.044 255.2)",
+          "oklch(26% 0.051 255.2)",
+          "oklch(37% 0.051 255.2)",
+          "oklch(48% 0.051 255.2)",
+          "oklch(59% 0.051 255.2)",
+          "oklch(70% 0.051 255.2)",
+          "oklch(82% 0.051 255.2)",
+          "oklch(95% 0.044 255.2)"
+        ]
+      },
+      "settings-pale-top": {
+        "role": "neutral",
+        "displayName": "Graphite Pale Top",
+        "canonical": "#F1F3F7",
+        "section": "Settings",
+        "use": "Light ground start; light panel/sidebar tint",
+        "tonalRamp": [
+          "oklch(15% 0.006 264.5)",
+          "oklch(26% 0.006 264.5)",
+          "oklch(37% 0.006 264.5)",
+          "oklch(48% 0.006 264.5)",
+          "oklch(59% 0.006 264.5)",
+          "oklch(70% 0.006 264.5)",
+          "oklch(82% 0.006 264.5)",
+          "oklch(95% 0.006 264.5)"
+        ]
+      },
+      "settings-pale-bottom": {
+        "role": "neutral",
+        "displayName": "Graphite Pale Bottom",
+        "canonical": "#E1E6EE",
+        "section": "Settings",
+        "use": "Light ground end",
+        "tonalRamp": [
+          "oklch(15% 0.012 259.8)",
+          "oklch(26% 0.012 259.8)",
+          "oklch(37% 0.012 259.8)",
+          "oklch(48% 0.012 259.8)",
+          "oklch(59% 0.012 259.8)",
+          "oklch(70% 0.012 259.8)",
+          "oklch(82% 0.012 259.8)",
+          "oklch(95% 0.012 259.8)"
+        ]
+      },
+      "settings-ink": {
+        "role": "neutral",
+        "displayName": "Graphite Ink",
+        "canonical": "#1E2430",
+        "section": "Settings",
+        "use": "Text on light grounds",
+        "tonalRamp": [
+          "oklch(15% 0.024 264.0)",
+          "oklch(26% 0.024 264.0)",
+          "oklch(37% 0.024 264.0)",
+          "oklch(48% 0.024 264.0)",
+          "oklch(59% 0.024 264.0)",
+          "oklch(70% 0.024 264.0)",
+          "oklch(82% 0.024 264.0)",
+          "oklch(95% 0.024 264.0)"
+        ]
+      },
+      "settings-tile-top": {
+        "role": "neutral",
+        "displayName": "Graphite Tile Top",
+        "canonical": "#9AA9BF",
+        "section": "Settings",
+        "use": "Tile/glass gradient start",
+        "tonalRamp": [
+          "oklch(15% 0.036 257.9)",
+          "oklch(26% 0.036 257.9)",
+          "oklch(37% 0.036 257.9)",
+          "oklch(48% 0.036 257.9)",
+          "oklch(59% 0.036 257.9)",
+          "oklch(70% 0.036 257.9)",
+          "oklch(82% 0.036 257.9)",
+          "oklch(95% 0.036 257.9)"
+        ]
+      },
+      "settings-tile-bottom": {
+        "role": "neutral",
+        "displayName": "Graphite Tile Bottom",
+        "canonical": "#56637A",
+        "section": "Settings",
+        "use": "Tile/glass gradient end; control tint",
+        "tonalRamp": [
+          "oklch(15% 0.040 261.8)",
+          "oklch(26% 0.040 261.8)",
+          "oklch(37% 0.040 261.8)",
+          "oklch(48% 0.040 261.8)",
+          "oklch(59% 0.040 261.8)",
+          "oklch(70% 0.040 261.8)",
+          "oklch(82% 0.040 261.8)",
+          "oklch(95% 0.040 261.8)"
+        ]
+      },
+      "settings-spark": {
+        "role": "neutral",
+        "displayName": "Graphite Spark",
+        "canonical": "#B9C7DB",
+        "section": "Settings",
+        "use": "Second-hue accent pieces in hero objects; ring tail",
+        "tonalRamp": [
+          "oklch(15% 0.032 257.2)",
+          "oklch(26% 0.032 257.2)",
+          "oklch(37% 0.032 257.2)",
+          "oklch(48% 0.032 257.2)",
+          "oklch(59% 0.032 257.2)",
+          "oklch(70% 0.032 257.2)",
+          "oklch(82% 0.032 257.2)",
+          "oklch(95% 0.032 257.2)"
+        ]
+      },
+      "glass-white": {
+        "role": "neutral",
+        "displayName": "Glass White",
+        "canonical": "#FFFFFF",
+        "use": "Dark-room pill body, tile glyphs, rim and specular light",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(48% 0 0)",
+          "oklch(59% 0 0)",
+          "oklch(70% 0 0)",
+          "oklch(82% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "brand-spark-top": {
+        "role": "tertiary",
+        "displayName": "Brand Spark Ice",
+        "canonical": "#9AE8FF",
+        "use": "Top of the sidebar wordmark sparkle gradient (ends in Smart Scan glow)",
+        "tonalRamp": [
+          "oklch(15% 0.053 218.4)",
+          "oklch(26% 0.069 218.4)",
+          "oklch(37% 0.083 218.4)",
+          "oklch(48% 0.083 218.4)",
+          "oklch(59% 0.083 218.4)",
+          "oklch(70% 0.083 218.4)",
+          "oklch(82% 0.072 218.4)",
+          "oklch(95% 0.053 218.4)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "First-visit tool title."
+      },
+      "display-compact": {
+        "displayName": "Display Compact",
+        "purpose": "Tool title on the compact intro after first use."
+      },
+      "headline-figure": {
+        "displayName": "Headline Figure",
+        "purpose": "Progress percentage under the ring."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Results and list screen titles."
+      },
+      "subtitle": {
+        "displayName": "Subtitle",
+        "purpose": "One plain sentence under the tool title (14pt on compact)."
+      },
+      "body-strong": {
+        "displayName": "Body Strong",
+        "purpose": "Bullet labels and the pill label."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Bullet details and sidebar rows."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Requirement note, scan detail, compact bullet labels."
+      },
+      "sidebar-section": {
+        "displayName": "Sidebar Section",
+        "purpose": "Sidebar section headers at ink 0.5."
+      },
+      "wordmark": {
+        "displayName": "Wordmark",
+        "purpose": "Sidebar 'Sheen' wordmark."
+      }
+    },
+    "shadows": [
+      {
+        "name": "floor-shadow",
+        "value": "ellipse 210x30pt, blur 16, deep@0.85 (dark) / mid@0.32 (light), x = -18pt * light.x, y 132pt",
+        "purpose": "Under every hero object, swinging opposite the light."
+      },
+      {
+        "name": "pill-shadow",
+        "value": "0 5px 10px deep@0.5 (dark) / deep@0.28 (light); hover 0 8px 16px",
+        "purpose": "Primary action only."
+      },
+      {
+        "name": "tile-shadow",
+        "value": "0 3px 6px deep@0.28; glyph 0 1px 1px deep@0.35",
+        "purpose": "Bullet and sidebar tiles."
+      },
+      {
+        "name": "ring-glow",
+        "value": "0 0 10px glow@0.55 (dark) / glow@0.3 (light)",
+        "purpose": "Progress arc."
+      },
+      {
+        "name": "glass-extrusion",
+        "value": "7 side-wall layers (tinted) or 14 merged at 0.13 (clear), offset away from the light by thickness 6-12pt",
+        "purpose": "Thickness of every glass piece."
+      },
+      {
+        "name": "glass-rim",
+        "value": "stroke 1.6pt (2pt clear), white 0.95 -> 0.22 -> 0.08 from the lit side",
+        "purpose": "Rim light on every glass piece."
+      },
+      {
+        "name": "glass-specular",
+        "value": "elliptical white 0.75 (0.55 clear) -> 0.1 -> clear, centered 36% toward the light",
+        "purpose": "Specular bloom following the pointer."
+      }
+    ],
+    "motion": [
+      {
+        "name": "pointer-follow",
+        "value": "interactiveSpring(response: 0.55, dampingFraction: 0.82)",
+        "purpose": "Light, tilt and parallax following the pointer."
+      },
+      {
+        "name": "pointer-release",
+        "value": "spring(response: 0.9, dampingFraction: 0.86)",
+        "purpose": "Return to rest light when the pointer leaves."
+      },
+      {
+        "name": "hover",
+        "value": "easeOut 0.16s",
+        "purpose": "Pill hover."
+      },
+      {
+        "name": "press",
+        "value": "easeOut 0.1s, scale 0.97",
+        "purpose": "Pill press."
+      },
+      {
+        "name": "intro-gate",
+        "value": "easeOut 0.28s, opacity + scale 1.02 (opacity only under Reduce Motion)",
+        "purpose": "Intro stepping aside to the list after first use."
+      },
+      {
+        "name": "state",
+        "value": "easeOut 0.25-0.35s",
+        "purpose": "Progress updates, percentage, sidebar tint crossfade, selected-row scroll."
+      },
+      {
+        "name": "hero-glide",
+        "value": "matchedGeometryEffect, .smooth 0.45s",
+        "purpose": "Hero moving from intro into the progress ring."
+      },
+      {
+        "name": "tilt-limit",
+        "value": "8deg max, perspective 0.55; parallax 11pt x / 8pt y per depth unit",
+        "purpose": "Bounds of the pointer response."
+      },
+      {
+        "name": "reduce-motion",
+        "value": "no pointer tracking; crossfades only",
+        "purpose": "Accessibility."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "intro-compact-wide",
+        "value": "640pt"
+      },
+      {
+        "name": "intro-side-by-side",
+        "value": "660pt"
+      },
+      {
+        "name": "intro-wide-column",
+        "value": "980pt"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Pill (dark room)",
+      "kind": "button",
+      "refersTo": "button-primary-dark",
+      "description": "The one action on a tool screen in dark appearance: white capsule, label in the section's mid mixed 25% into deep (Cobalt shown).",
+      "html": "<div class=\"ds-room-dark\"><button class=\"ds-pill-dark\">Show Apps</button></div>",
+      "css": ".ds-room-dark{padding:28px;background:linear-gradient(135deg,#05163A,#123892 50%,#05163A);} .ds-pill-dark{font-family:-apple-system,'SF Pro Text',system-ui;font-size:15px;font-weight:600;color:#123892;min-width:150px;height:46px;padding:0 30px;border:none;border-radius:999px;background:linear-gradient(#fff,rgba(255,255,255,.88));box-shadow:0 5px 10px rgba(5,22,58,.5);transition:box-shadow .16s ease-out,filter .16s ease-out,transform .1s ease-out;cursor:pointer;} .ds-pill-dark:hover{filter:brightness(1.03);box-shadow:0 8px 16px rgba(5,22,58,.5);} .ds-pill-dark:active{filter:brightness(.94);transform:scale(.97);} .ds-pill-dark:focus-visible{outline:3px solid #52A8FF;outline-offset:3px;}"
+    },
+    {
+      "name": "Primary Pill (light room)",
+      "kind": "button",
+      "refersTo": "button-primary-light",
+      "description": "The one action in light appearance: section-mid gradient capsule with a white label (Rose Plum shown).",
+      "html": "<div class=\"ds-room-light\"><button class=\"ds-pill-light\">Scan</button></div>",
+      "css": ".ds-room-light{padding:28px;background:linear-gradient(135deg,#FFEAF0,#FFD3DF);} .ds-pill-light{font-family:-apple-system,'SF Pro Text',system-ui;font-size:15px;font-weight:600;color:#fff;min-width:150px;height:46px;padding:0 30px;border:1px solid rgba(255,255,255,.28);border-radius:999px;background:linear-gradient(#982F59,#6F1338);box-shadow:0 5px 10px rgba(42,6,25,.28);transition:box-shadow .16s ease-out,filter .16s ease-out,transform .1s ease-out;cursor:pointer;} .ds-pill-light:hover{filter:brightness(1.03);box-shadow:0 8px 16px rgba(42,6,25,.28);} .ds-pill-light:active{filter:brightness(.94);transform:scale(.97);} .ds-pill-light:focus-visible{outline:3px solid #FF5C8A;outline-offset:3px;}"
+    },
+    {
+      "name": "Primary Pill (disabled)",
+      "kind": "button",
+      "refersTo": "button-primary-dark",
+      "description": "Disabled stays readable: quiet translucent pill, label at white 0.62.",
+      "html": "<div class=\"ds-room-dark2\"><button class=\"ds-pill-off\" disabled>Clean</button></div>",
+      "css": ".ds-room-dark2{padding:28px;background:linear-gradient(135deg,#04241D,#0A4F40 50%,#04241D);} .ds-pill-off{font-family:-apple-system,'SF Pro Text',system-ui;font-size:15px;font-weight:600;color:rgba(255,255,255,.62);min-width:150px;height:46px;padding:0 30px;border:none;border-radius:999px;background:rgba(255,255,255,.14);}"
+    },
+    {
+      "name": "Bullet Row",
+      "kind": "custom",
+      "refersTo": "bullet-tile",
+      "description": "Intro bullet: 36pt rounded gradient tile with a white symbol, 15pt semibold label, 13pt detail line.",
+      "html": "<div class=\"ds-room-dark3\"><div class=\"ds-bullet\"><span class=\"ds-tile\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2.6\" stroke-linecap=\"round\"><rect x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"4\"/><circle cx=\"17\" cy=\"7\" r=\"1.5\" fill=\"#fff\"/></svg></span><span><b class=\"ds-b-label\">Every installed app</b><span class=\"ds-b-detail\">Search, or show only unused or third-party apps.</span></span></div></div>",
+      "css": ".ds-room-dark3{padding:24px;background:linear-gradient(135deg,#05163A,#123892 50%,#05163A);color:#fff;} .ds-bullet{display:flex;gap:14px;align-items:flex-start;font-family:-apple-system,'SF Pro Text',system-ui;} .ds-tile{flex:none;width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(180deg,rgba(255,255,255,.38),rgba(255,255,255,0) 50%),linear-gradient(135deg,#62BCFF,#2F57F5);box-shadow:inset 0 0 0 .75px rgba(255,255,255,.32),0 3px 6px rgba(5,22,58,.28);} .ds-b-label{display:block;font-size:15px;font-weight:600;} .ds-b-detail{display:block;margin-top:3px;font-size:13px;color:rgba(255,255,255,.74);}"
+    },
+    {
+      "name": "Sidebar",
+      "kind": "nav",
+      "refersTo": "sidebar-row",
+      "description": "Vibrancy sidebar tinted by the current world; section headers, 24pt tiles, 13pt rows, selected row semibold on ink 0.13.",
+      "html": "<nav class=\"ds-side\"><div class=\"ds-side-h\">Protection</div><a class=\"ds-row ds-sel\" href=\"#\"><span class=\"ds-st\" style=\"background:linear-gradient(135deg,#FF7B9C,#C71A5A)\"></span>Malware Removal</a><a class=\"ds-row\" href=\"#\"><span class=\"ds-st\" style=\"background:linear-gradient(135deg,#FF7B9C,#C71A5A)\"></span>Privacy</a><div class=\"ds-side-h\">Performance</div><a class=\"ds-row\" href=\"#\"><span class=\"ds-st\" style=\"background:linear-gradient(135deg,#FFC54D,#F0561A)\"></span>Optimization</a></nav>",
+      "css": ".ds-side{width:220px;padding:6px 10px 12px;background:rgba(255,234,240,.85);font-family:-apple-system,'SF Pro Text',system-ui;color:#5E0B2D;} .ds-side-h{font-size:11px;font-weight:600;opacity:.5;padding:12px 10px 3px;} .ds-row{display:flex;align-items:center;gap:10px;padding:5px 8px;margin-top:1px;border-radius:9px;font-size:13px;color:rgba(94,11,45,.8);text-decoration:none;transition:background .16s ease-out;} .ds-row:hover{background:rgba(94,11,45,.06);} .ds-row:focus-visible{outline:2px solid #C71A5A;outline-offset:1px;} .ds-sel{background:rgba(94,11,45,.13);color:#5E0B2D;font-weight:600;} .ds-st{width:24px;height:24px;border-radius:7px;flex:none;box-shadow:inset 0 0 0 .75px rgba(255,255,255,.32),0 3px 6px rgba(42,6,25,.28);}"
+    },
+    {
+      "name": "Progress Ring",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "270pt ring around the tool's hero, round-capped arc in tile bottom, tile top, spark; 34pt light percentage below.",
+      "html": "<div class=\"ds-ring-room\"><div class=\"ds-ring\"></div><div class=\"ds-pct\">62%</div></div>",
+      "css": ".ds-ring-room{padding:24px;display:grid;justify-items:center;background:linear-gradient(135deg,#04241D,#0A4F40 50%,#04241D);color:#fff;font-family:-apple-system,'SF Pro Text',system-ui;} .ds-ring{width:160px;height:160px;border-radius:50%;background:conic-gradient(#0A9A7B,#45E8B0 40%,#C8F25A 62%,rgba(255,255,255,.1) 62%);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 7px),#000 calc(100% - 6px));mask:radial-gradient(farthest-side,transparent calc(100% - 7px),#000 calc(100% - 6px));filter:drop-shadow(0 0 8px rgba(59,240,168,.55));} .ds-pct{margin-top:16px;font-size:34px;font-weight:300;font-variant-numeric:tabular-nums;}"
+    },
+    {
+      "name": "Room Ground",
+      "kind": "card",
+      "refersTo": null,
+      "description": "The section ground: dark deep to mid field with a glow pool and corner light; light pale field with the same pool.",
+      "html": "<div class=\"ds-ground-d\"></div><div class=\"ds-ground-l\"></div>",
+      "css": ".ds-ground-d,.ds-ground-l{display:inline-block;width:240px;height:150px;margin:4px;} .ds-ground-d{background:radial-gradient(circle at 92% 5%,rgba(90,33,180,.55),transparent 60%),radial-gradient(circle at 28% 46%,rgba(197,126,255,.42),rgba(90,33,180,.18) 40%,transparent 75%),linear-gradient(135deg,#1A0939,#44197D 50%,#1A0939);} .ds-ground-l{background:radial-gradient(circle at 90% 0%,rgba(255,255,255,.65),transparent 60%),radial-gradient(circle at 28% 46%,rgba(197,126,255,.38),rgba(197,126,255,.1) 40%,transparent 75%),linear-gradient(135deg,#F3EAFF,#E0CCFF);}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Lit Room",
+    "overview": "Each tool is a room drenched in its section's color. One original glass object per tool sits in the room under a light the cursor carries: the specular bloom and rim light slide toward the pointer, the object tilts toward it, its pieces parallax by depth, and its floor shadow swings the other way. Beside the object, a large light-weight title, one plain subtitle, three bulleted promises and a single pill action. Scanning happens in the same room: the object glides into the center of a progress ring cut from the section's gradient, and comes back to rest at the head of the results.\n\nThe system is native macOS through and through: SF Pro only, SF Symbols as the only glyph source, the real sidebar vibrancy material, system materials under lists. What makes it its own is color and light, not chrome. Dark appearance is a deep two-hue field with a soft light pool behind the object; light appearance is the same hue made luminous, pale top to pale bottom with the same pool. Nothing ships as a raster: every object, tile and ground is drawn in code from a small set of glass primitives.\n\nDensity is low on the front door and normal on the working screens. A tool's intro is a single viewport with lots of air; once the tool has been used it reopens compact, button first, so returning users reach the task faster.",
+    "keyCharacteristics": [
+      "Seven color worlds (six sections plus Settings graphite), each nine colors; a world drenches ground, sidebar tint, list panels, tiles, ring and control tint together.",
+      "One glass hero object per tool on a 300pt stage, lit by a pointer-driven light; static at rest under Reduce Motion.",
+      "Light-weight display titles (40 / 32 / 28pt) with negative tracking; semibold only for labels and the action.",
+      "One capsule primary action per screen, inverted between appearances.",
+      "Rounded gradient tiles with white SF Symbols as the bullet and sidebar icon."
+    ],
+    "rules": [
+      {
+        "name": "The One Room Rule",
+        "body": "A screen belongs to exactly one world. Ground, sidebar tint, list panel tint, ring, pill and control tint all come from the selected tool's section; the only other worlds on screen are the sidebar's own row tiles, each carrying its section.",
+        "section": "colors"
+      },
+      {
+        "name": "The Derived Glass Rule",
+        "body": "Glass is never given its own colors. It is cut from four tints derived from the world: section glass (tile gradient, deep edge), spark glass (spark lifted 35% toward white), clear glass (white with a breath of glow), and pearl (white into spark mixed 62% toward white, mid edge).",
+        "section": "colors"
+      },
+      {
+        "name": "The Light Voice Rule",
+        "body": "Every title on a tool screen is light weight (300). Bold display type is not part of this system.",
+        "section": "typography"
+      },
+      {
+        "name": "The Object Is The Subject Rule",
+        "body": "At every width the hero object takes whatever space the text column leaves; the text column is capped, the object is not shrunk to make room for decoration.",
+        "section": "layout"
+      },
+      {
+        "name": "The Cursor Is The Light Rule",
+        "body": "Every highlight, rim, bevel, extrusion and floor shadow answers one shared light. At rest it sits top-left; the pointer pulls it across the object. Never paint a fixed highlight that disagrees with it.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Colored Shadow Rule",
+        "body": "Shadows are tinted with the world's deep or mid, never neutral black, except the hairline bevel of an engraved symbol (black 0.28).",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** take every color on a tool screen from its section's world, including the control tint (tile bottom).",
+      "**Do** build any new hero object from the glass primitives and shape kit, at 300 x 300pt, with pieces assigned depths, and hide it from VoiceOver.",
+      "**Do** keep titles light weight (40 / 32 / 28pt) and reserve semibold for labels and the action.",
+      "**Do** put exactly one capsule primary action on a tool screen: white with a section label in dark rooms, section gradient with a white label in light rooms.",
+      "**Do** keep disabled actions readable (label at 0.62 white or 0.55 ink) on a quiet translucent pill.",
+      "**Do** stop all pointer tracking under Reduce Motion and fall back to crossfades.",
+      "**Do** write intro copy as a label plus one plain, true line per bullet, three bullets per tool."
+    ],
+    "donts": [
+      "**Don't** paint a fixed highlight, gloss or shadow on glass that ignores the shared light, and don't tilt an object more than 8°.",
+      "**Don't** mix two worlds' grounds on one screen, or tint shadows neutral black.",
+      "**Don't** set tool titles in bold display type; the older bold welcome cards (30 and 34pt bold) are not part of this system.",
+      "**Don't** ship raster artwork, and never reuse MacPaw's artwork, icons, illustrations or branding; every object is original and drawn in code.",
+      "**Don't** wrap the room in an inset card or grey pane; the detail pane is the ground, full-bleed.",
+      "**Don't** let animation hold up a scan, review or clean."
+    ]
+  }
+}

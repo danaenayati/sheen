@@ -1,0 +1,59 @@
+import XCTest
+import Foundation
+
+/// Guards issue #1: the README must keep a user-verifiable "no telemetry"
+/// section with copy-pasteable commands — not just a marketing claim.
+final class ReadmeTelemetrySectionTests: XCTestCase {
+
+    private func readmeURL(_ name: String) -> URL {
+        URL(filePath: #filePath)
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .appending(path: name)
+    }
+
+    private func assertTelemetrySection(in fileName: String, headingNeedle: String) throws {
+        let src = try String(contentsOf: readmeURL(fileName), encoding: .utf8)
+        XCTAssertTrue(
+            src.contains(headingNeedle),
+            "\(fileName) must include heading «\(headingNeedle)» (issue #1)"
+        )
+        XCTAssertTrue(
+            src.contains("lsof") || src.contains("URLSession"),
+            "\(fileName) telemetry section must include a copy-pasteable verification command"
+        )
+        XCTAssertTrue(
+            src.contains("nm -u"),
+            "\(fileName) must include the binary-inspection step (nm -u) so verification covers the shipped artifact, not just the source"
+        )
+    }
+
+    func testEnglishReadmeHasVerifyNoTelemetrySection() throws {
+        try assertTelemetrySection(
+            in: "README.md",
+            headingNeedle: "Verify no telemetry yourself"
+        )
+    }
+
+
+
+
+
+
+    /// A MalwareBazaar hit on a signed file makes macOS check the signing
+    /// certificate's revocation status with Apple (OCSP). That request comes
+    /// from macOS, so check-network-surface.sh can't see it; every README
+    /// lists it next to the MalwareBazaar download.
+    func testEveryReadmeDisclosesTheRevocationLookup() throws {
+        let needles = [
+            "README.md": "signing certificate was revoked",
+        ]
+        for (file, needle) in needles {
+            let src = try String(contentsOf: readmeURL(file), encoding: .utf8)
+            XCTAssertTrue(src.contains(needle), "\(file) must disclose the OCSP revocation lookup")
+        }
+        let security = try String(contentsOf: readmeURL("SECURITY.md"), encoding: .utf8)
+        XCTAssertTrue(security.contains("signing certificate was revoked"), "SECURITY.md must disclose it too")
+    }
+}

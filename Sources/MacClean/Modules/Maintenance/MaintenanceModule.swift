@@ -1,0 +1,186 @@
+import Foundation
+import MacCleanKit
+
+public struct MaintenanceModule: ScanModule {
+    public let id = "maintenance"
+    public var name: String { L10n.tr("维护", "Maintenance", "Обслуживание") }
+    public let category = ModuleCategory.performance
+
+    public init() {}
+
+    public func scan() async -> [ScanResult] { [] }
+}
+
+// MARK: - Maintenance Executor
+//
+// `MaintenanceTask` (the enum + descriptions + system commands) lives in
+// MacCleanKit. This actor runs those commands: admin ones through in-process
+// AppleScript (password cached per process, issue #143), the rest via Process.
+
+public actor MaintenanceExecutor {
+    public struct TaskResult: Sendable {
+        public let task: MaintenanceTask
+        public let success: Bool
+        public let output: String
+        public let error: String?
+    }
+
+    private let privilegedRunner: any PrivilegedShellRunning
+    private let commandExists: @Sendable (String) -> Bool
+
+    public init() {
+        self.init(
+            privilegedRunner: AppleScriptPrivilegedRunner(),
+            commandExists: { FileManager.default.isExecutableFile(atPath: $0) }
+        )
+    }
+
+    init(
+        privilegedRunner: any PrivilegedShellRunning,
+        commandExists: @escaping @Sendable (String) -> Bool
+    ) {
+        self.privilegedRunner = privilegedRunner
+        self.commandExists = commandExists
+    }
+
+    public func execute(_ task: MaintenanceTask) async -> TaskResult {
+        if case .speedUpMail = task { return await reindexMail() }
+        if case .pruneDocker = task { return await pruneDocker() }
+
+        guard let (command, args) = task.systemCommand else {
+            return TaskResult(task: task, success: false, output: "",
+                              error: L10n.tr("该任务没有可执行的系统命令", "Task has no system command", "Для этой задачи нет системной команды"))
+        }
+
+        // Report a missing system tool instead of running it and surfacing the
+        // raw shell error. Apple removed `/usr/sbin/periodic` in macOS 26, so
+        // Run Maintenance Scripts failed with
+        // `/bin/sh: /usr/sbin/periodic: No such file or directory` (issue #129)
+        // — which reads as an app bug rather than a tool the OS dropped. Gating
+        // here rather than per-task covers every hard-coded path in
+        // `systemCommand`, the same way `pruneDocker` already gates on the
+        // Docker CLI. Checked unprivileged, so an admin task fails before the
+        // password prompt rather than after it.
+        guard task.systemCommandIsAvailable(existing: commandExists) else {
+            return TaskResult(
+                task: task, success: false, output: "",
+                error: L10n.tr("\(command) 在当前 macOS 版本中不可用，无法执行该任务。",
+                               "\(command) isn't available on this version of macOS, so this task can't run.",
+                               "\(command) недоступно в этой версии macOS, поэтому эту задачу нельзя выполнить."))
+        }
+
+        if task.requiresAdmin {
+            return await runAdminProcess(task: task, command: command, args: args)
+        }
+        return await runProcess(task: task, command: command, args: args)
+    }
+
+    /// Run a root-requiring command via the standard macOS admin-auth prompt
+    /// (`do shell script … with administrator privileges`). Executed
+    /// in-process so successive tasks reuse the cached credentials (issue
+    /// #143) — spawning `/usr/bin/osascript` each time could not. The
+    /// command strings come from the fixed `MaintenanceTask` enum (never
+    /// user input).
+    private func runAdminProcess(task: MaintenanceTask, command: String, args: [String]) async -> TaskResult {
+        let shell = MaintenanceShell.commandLine(command, args)
+        let result = await privilegedRunner.run(commandLine: shell)
+
+        if result.success {
+            return TaskResult(task: task, success: true, output: result.output, error: nil)
+        }
+
+        let err = result.error ?? ""
+        if MaintenanceShell.isAuthorizationCancelled(err, errorNumber: result.errorNumber) {
+            return TaskResult(task: task, success: false, output: "",
+                              error: L10n.tr("已取消——未授予管理员权限。", "Cancelled — administrator access was not granted.", "Отменено: не предоставлены права администратора."))
+        }
+        // Strip AppleScript's "1:92: execution error: … (1)" wrapper so the
+        // user sees the real underlying message (issue #82).
+        return TaskResult(task: task, success: false, output: "",
+                          error: MaintenanceShell.humanReadableError(err))
+    }
+
+    private func runProcess(task: MaintenanceTask, command: String, args: [String]) async -> TaskResult {
+        let process = Process()
+        let outputPipe = Pipe()
+        let errorPipe = Pipe()
+
+        process.executableURL = URL(filePath: command)
+        process.arguments = args
+        process.standardOutput = outputPipe
+        process.standardError = errorPipe
+
+        do {
+            try process.run()
+            process.waitUntilExit()
+
+            let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
+            let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
+            let output = String(data: outputData, encoding: .utf8) ?? ""
+            let error = String(data: errorData, encoding: .utf8)
+
+            return TaskResult(
+                task: task,
+                success: process.terminationStatus == 0,
+                output: output,
+                error: error?.isEmpty == true ? nil : error
+            )
+        } catch {
+            return TaskResult(
+                task: task,
+                success: false,
+                output: "",
+                error: error.localizedDescription
+            )
+        }
+    }
+
+    private func reindexMail() async -> TaskResult {
+        let mailEnvelopeIndex = MCConstants.mailData
+            .appending(path: "V10/MailData/Envelope Index")
+
+        let fm = FileManager.default
+        if fm.fileExists(atPath: mailEnvelopeIndex.path(percentEncoded: false)) {
+            do {
+                try fm.removeItem(at: mailEnvelopeIndex)
+                return TaskResult(
+                    task: .speedUpMail,
+                    success: true,
+                    output: L10n.tr("邮件索引已移除。邮件将在下次启动时重建。", "Mail envelope index removed. Mail will rebuild it on next launch.", "Индекс Почты удалён. Почта перестроит его при следующем запуске."),
+                    error: nil
+                )
+            } catch {
+                return TaskResult(
+                    task: .speedUpMail,
+                    success: false,
+                    output: "",
+                    error: error.localizedDescription
+                )
+            }
+        }
+
+        return TaskResult(
+            task: .speedUpMail,
+            success: true,
+            output: L10n.tr("未找到邮件索引——邮件可能使用了不同的版本目录。", "Mail envelope index not found — Mail may use a different version directory.", "Индекс Почты не найден: возможно, Почта использует другую папку версии."),
+            error: nil
+        )
+    }
+
+    /// Reclaim Docker space via `docker system prune -f`. Gated on the Docker
+    /// CLI existing (resolved from MaintenanceTask.dockerCandidatePaths); if it
+    /// isn't installed we report that instead of failing obscurely. Runs as the
+    /// user (the CLI talks to Docker Desktop's daemon), so no admin prompt.
+    private func pruneDocker() async -> TaskResult {
+        guard let docker = MaintenanceTask.resolveDockerPath(existing: {
+            FileManager.default.isExecutableFile(atPath: $0)
+        }) else {
+            return TaskResult(
+                task: .pruneDocker, success: false, output: "",
+                error: L10n.tr("未找到 Docker 命令行工具。请确认已安装 Docker Desktop。",
+                               "Docker CLI not found. Make sure Docker Desktop is installed.",
+                "Команда Docker не найдена. Убедитесь, что Docker Desktop установлен."))
+        }
+        return await runProcess(task: .pruneDocker, command: docker, args: ["system", "prune", "-f"])
+    }
+}
