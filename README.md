@@ -154,7 +154,7 @@ Plus **Smart Scan**, which runs cleanup, malware and privacy checks in one pass,
 
 ## In your menu bar
 
-Sheen's mark sits in the menu bar, nothing else. Click it for a quick health check: CPU, memory, disk and battery as four tiles, network speed and malware status underneath, cleanup tips and connected drives one tab away. Click a tile to open the tool that acts on it. Don't want it? Turn it off in **Settings → Show Sheen in the menu bar**.
+Sheen's mark sits in the menu bar, nothing else. Click it for a quick health check: CPU, memory, disk and battery as four tiles, network speed and malware status underneath, cleanup tips and connected drives one tab away. Click a tile to open the tool that acts on it, or **Quit** to close Sheen and the monitor together. Don't want it? Turn it off in **Settings → Show Sheen in the menu bar**.
 
 <p align="center">
   <img src="assets/screenshots/menu-panel-dark.png" width="340" alt="Sheen's menu bar panel in dark appearance: Health tab with CPU, Memory, Disk and Battery tiles on a midnight-indigo ground" />

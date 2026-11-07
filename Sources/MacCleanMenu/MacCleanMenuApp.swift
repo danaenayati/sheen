@@ -433,15 +433,23 @@ struct MenuContentView: View {
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(MenuPillStyle())
-            Button(L10n.tr("退出", "Quit", "Выйти")) {
-                MenuBarKeepAlive.setUserQuit(true, defaults: SharedAppState.defaults)
-                NSApplication.shared.terminate(nil)
+            Button(action: quitSheen) {
+                Label(L10n.tr("退出", "Quit", "Выйти"), systemImage: "power")
             }
-            .buttonStyle(.plain)
-            .font(.system(size: 13))
-            .foregroundStyle(softInk)
-            .help(L10n.tr("退出菜单栏监视器。可在 Sheen 设置中重新打开。", "Quit the menu bar monitor. Turn it back on in Sheen's Settings.", "Закрыть виджет. Включить снова можно в настройках Sheen."))
+            .buttonStyle(MenuQuietPillStyle())
+            .help(L10n.tr("退出 Sheen 及其菜单栏监视器。再次打开 Sheen 即可恢复。", "Quit Sheen and its menu bar monitor. Open Sheen again to bring them back.", "Закрыть Sheen и виджет в строке меню. Откройте Sheen, чтобы вернуть их."))
+            .accessibilityLabel(L10n.tr("退出 Sheen", "Quit Sheen", "Выйти из Sheen"))
         }
+    }
+
+    /// Quits the app (if it is open) and this monitor. Opening Sheen again
+    /// clears the quit flag and brings the monitor back.
+    private func quitSheen() {
+        for app in NSRunningApplication.runningApplications(withBundleIdentifier: MCConstants.bundleIdentifier) {
+            app.terminate()
+        }
+        MenuBarKeepAlive.setUserQuit(true, defaults: SharedAppState.defaults)
+        NSApplication.shared.terminate(nil)
     }
 
     // MARK: Formatting
@@ -625,6 +633,35 @@ struct MenuTile: View {
             .frame(width: size, height: size)
             .shadow(color: MenuWorld.deep.opacity(0.28), radius: 4, y: 2)
             .accessibilityHidden(true)
+    }
+}
+
+/// The footer's secondary action: a quiet glass capsule beside the pill.
+private struct MenuQuietPillStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        MenuQuietPillFace(configuration: configuration)
+    }
+}
+
+private struct MenuQuietPillFace: View {
+    let configuration: ButtonStyleConfiguration
+    @Environment(\.colorScheme) private var scheme
+    @State private var hovering = false
+
+    var body: some View {
+        let dark = scheme == .dark
+        configuration.label
+            .font(.system(size: 13, weight: .medium))
+            .foregroundStyle(dark ? Color.white : MenuWorld.ink)
+            .frame(height: 36)
+            .padding(.horizontal, 14)
+            .background(Capsule().fill(dark ? Color.white.opacity(hovering ? 0.18 : 0.12) : MenuWorld.mid.opacity(hovering ? 0.14 : 0.09)))
+            .overlay(Capsule().strokeBorder(dark ? Color.white.opacity(0.14) : MenuWorld.mid.opacity(0.12), lineWidth: 0.75))
+            .scaleEffect(configuration.isPressed ? 0.97 : 1)
+            .contentShape(Capsule())
+            .onHover { hovering = $0 }
+            .animation(.easeOut(duration: 0.15), value: hovering)
+            .animation(.easeOut(duration: 0.1), value: configuration.isPressed)
     }
 }
 

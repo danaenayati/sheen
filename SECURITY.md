@@ -26,7 +26,7 @@ Sheen releases are **ad-hoc signed and not notarized by Apple**: the project has
 ```bash
 git clone https://github.com/danaenayati/sheen.git
 cd sheen
-git checkout v1.2.0
+git checkout v1.2.1
 scripts/build-without-xcode.sh --install
 ```
 
