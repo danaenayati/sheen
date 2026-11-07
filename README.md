@@ -197,7 +197,9 @@ Sheen's mark sits in the menu bar, nothing else. Click it for a quick health che
 **Or with Homebrew:**
 
 ```bash
-brew install --cask danaenayati/sheen/sheen
+brew tap danaenayati/sheen
+brew trust danaenayati/sheen   # Homebrew asks you to trust third-party taps once
+brew install --cask sheen
 ```
 
 The same first-launch step applies, since Homebrew installs the same app.
